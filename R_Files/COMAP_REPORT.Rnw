@@ -92,7 +92,7 @@ ABSTRACT
 \raggedright {We analyze coauthor and article networks populated by authors with an Erdos number of 1, and articles linked by citation respectively.  We develop an algorithm to rank the authors in terms of relative influence, taking into account the quality of published works. When the only relationship between authors is coauthorship, only general centrality measures can be readily applied to attempt to distinguish influential network members. Simple models which only consider node degree measures fail to provide a purposeful way to weight links, limiting the detail of the analysis. We present a method to rank coauthors by first constructing an article network composed of articles written by members of the coauthor network. We require that the articles cite other papers in the network so that relative article rankings can be calculated.These article rankings are used to determine link weights in a symmetric coauthor(coendorsement) network, which can be thought of as the work quality of an author.Weighting coauthor links in this manner treats endorsement by a prominent author as more valuable than endorsement by a lesser one. With this furniture in place, a variation of a pagerank algorithm is applied to the coauthor network. We find the Perron-Frobenious eigenvector of the matrix composed of authorrank coefficients (quality weights), whose elements when normalized to one are the author ranks of the coauthor network. We discuss conclusions concerning influential members of the Erdos1 subnetwork and general applicability of this ranking method to other types of networks. We conclude with suggestions for further modifications to this approach, such as treating Erdos like a random web surfer in the Erdos1 network, where the pagerank damping coefficient is the probability that Erdos will coauthor with you given that he pays you a visit.}
 
 \quad \\
-Keywords: Network, Node, Target, Centrality \\
+Keywords: Network, Node, Target, Centrality, Heimdall Node \\
 Software Used: MATLAB, R
 \newpage
 \end{center}
@@ -150,6 +150,8 @@ This data was then loaded into Cytoscape to construct the network and perform an
 %\begin{center}
 \section{Construction of Article Network 1}
 %\end{center}
+
+
 
 %\begin{center}
 \section{Pagerank Algorithm for Directed Graphs}
