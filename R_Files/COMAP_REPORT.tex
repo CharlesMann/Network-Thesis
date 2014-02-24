@@ -63,7 +63,7 @@
 \fancyhf{}
 \fancyhead{}
 \fancyfoot{}
-\lhead{}
+\lhead{Team \# 32040}
 \chead{Page \thepage of \pageref{LastPage}}
 
 %%% END Article customizations
@@ -76,8 +76,9 @@
 
 \DeclareMathSizes{12}{12}{12}{10}
 
+\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{COMAP_REPORT-concordance}
 
 \maketitle
 \thispagestyle{fancy}
@@ -119,10 +120,6 @@ Software Used: MATLAB, R
       \indent RStudio is a free and open source software used mainly for statistical/data analysis. It is useful for sifting through large data sets and creating usable data structures for modeling. This software was chosen because of familiarity and suitability for the task at hand. 
       \subsubsection{Cytoscape} 
       \indent Cytoscape is also an open sourceware for visualizing data networks. While originally intended more for biological systems, it can be used for any general network $(www.cytoscape.org/what_is_cytoscape.html)$. In addition to the base Cytoscape application, an application named Centiscape was downloaded. This application calculates various influence measures based on the structure of a network (defined below). Cytoscape appears to be a well-maintained site, reliable in its operation. The standards of centrality measures are well-defined through it, and the visualization options aid in understanding the details of a given network.
-<<echo=FALSE>>=
-setwd("~/Network_Thesis/R_Files")
-source("erdosnetwork2.R")
-@
 
   \subsection{Extracting the Erdos1 Subnetwork}
   \indent Data was supplied via a website or included by the COMAP competition and consisted of over 18,000 lines of data, including names of authors and coauthor relationships. An example of a few lines of the raw data format is:\\
@@ -135,10 +132,12 @@ source("erdosnetwork2.R")
   \\
   \indent To create a network of authors only with Erdos numbers equal to one, this data set had to be modified with those authors of Erdos number equal to two removed. The function erdosnetwork.R was composed to handle the data extraction and formatting. After various attempts at constructing an appropriate patter using regular expressions in R, it was noticed that all Erdos 1 author names were spelled in all uppercase letters, leading to a relatively easy extraction of the relevant data while maintaining the coauthor relationships. The function takes the data saved as a .txt file and writes the relevant data into a new .txt file formatted into two columns, where horizontal rows represent a coauthor relationship. A sample of the returned data is:\\
   
-<<>>=
-#newdata <- erdosnetwork("Erdos.txt")
-#head(newdata)
-@
+\begin{Schunk}
+\begin{Sinput}
+> #newdata <- erdosnetwork("Erdos.txt")
+> #head(newdata)
+\end{Sinput}
+\end{Schunk}
 This data was then loaded into Cytoscape to construct the network and perform analyses via .
   \subsection{Graphing Erdos1 Subnetwork}
   \indent Cytoscape accepts Microsoft Excel files with the data formatted in columns, one being the column of source nodes, and the other the corresponding target nodes. Microsoft Excel in turn can accept formatted text files. In this way the data assembled in R is turned into the input for the software to build the network. Once the network has been assembled, Cytoscape offers various options for controlling the directedness of the graph, removing duplicate nodes and edges, and with Centiscape performing network analysis caluclations. Specifically, this software was used to calculate closeness, betweenness, stress, mean average path, and other structural-related influence measures. 
