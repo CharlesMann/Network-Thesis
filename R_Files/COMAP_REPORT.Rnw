@@ -63,7 +63,7 @@
 \fancyhf{}
 \fancyhead{}
 \fancyfoot{}
-\lhead{Team \# 32040}
+\lhead{}
 \chead{Page \thepage of \pageref{LastPage}}
 
 %%% END Article customizations
