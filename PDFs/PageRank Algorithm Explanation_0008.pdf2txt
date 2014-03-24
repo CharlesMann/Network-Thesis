@@ -1,0 +1,92 @@
+8 K. BRYAN AND T. LEISE
+• Show more generally that (Ap
+)ij > 0 if and only if page i can be reached from page j in
+EXACTLY p steps.
+• Argue that (I + A + A2
++ · · · + Ap
+)ij > 0 if and only if page i can be reached from page j
+in p or fewer steps (note p = 0 is a legitimate choice—any page can be reached from itself
+in zero steps!)
+• Explain why I + A + A2
++ · · · + An−1
+is a positive matrix if the web is strongly connected.
+• Use the last part (and Exercise 8) so show that B = 1
+n (I + A + A2
++ · · · + An−1
+) is positive
+and column-stochastic (and hence by Lemma 3.2, dim(V1(B)) = 1).
+• Show that if x ∈ V1(A) then x ∈ V1(B). Why does this imply that dim(V1(A)) = 1?
+Exercise 11. Consider again the web in Figure 2.1, with the addition of a page 5 that links to
+page 3, where page 3 also links to page 5. Calculate the new ranking by ﬁnding the eigenvector of
+M (corresponding to λ = 1) that has positive components summing to one. Use m = 0.15.
+Exercise 12. Add a sixth page that links to every page of the web in the previous exercise, but
+to which no other page links. Rank the pages using A, then using M with m = 0.15, and compare
+the results.
+Exercise 13. Construct a web consisting of two or more subwebs and determine the ranking
+given by formula (3.1).
+At present the web contains at least eight billion pages—how does one compute an eigenvector
+for an eight billion by eight billion matrix? One reasonable approach is an iterative procedure called
+the power method (along with modiﬁcations) that we will now examine for the special case at hand.
+It is worth noting that there is much additional analysis one can do, and many improved methods
+for the computation of PageRank. The reference [7] provides a typical example and additional
+references.
+4. Computing the Importance Score Eigenvector. The rough idea behind the power
+method2
+for computing an eigenvector of a matrix M is this: One starts with a “typical” vector
+x0, then generates the sequence xk = Mxk−1 (so xk = Mk
+x0) and lets k approaches inﬁnity. The
+vector xk is, to good approximation, an eigenvector for the dominant (largest magnitude) eigenvalue
+of M. However, depending on the magnitude of this eigenvalue, the vector xk may also grow
+without bound or decay to the zero vector. One thus typically rescales at each iteration, say by
+computing xk = Mxk−1
+Mxk−1
+, where · can be any vector norm. The method generally requires that
+the corresponding eigenspace be one-dimensional, a condition that is satisﬁed in the case when M
+is deﬁned by equation (3.1).
+To use the power method on the matrices M that arise from the web ranking problem we would
+generally need to know that any other eigenvalues λ of M satisfy |λ| < 1. This assures that the
+power method will converge to the eigenvector we want. Actually, the following proposition provides
+what we need, with no reference to any other eigenvalues of M!
+Definition 4.1. The 1-norm of a vector v is v 1 = i |vi|.
+Proposition 4. Let M be a positive column-stochastic n × n matrix and let V denote the
+subspace of lRn
+consisting of vectors v such that j vj = 0. Then Mv ∈ V for any v ∈ V , and
+Mv 1 ≤ c v 1
+for any v ∈ V , where c = max1≤j≤n |1 − 2 min1≤i≤n Mij| < 1. Proof. To see that Mv ∈ V is
+straightforward: Let w = Mv, so that wi =
+n
+j=1 Mijvj and
+n
+i=1
+wi =
+n
+i=1
+n
+j=1
+Mijvj =
+n
+j=1
+vj
+n
+i=1
+Mij =
+n
+j=1
+vj = 0.
+Hence w = Mv ∈ V . To prove the bound in the proposition note that
+w 1 =
+n
+i=1
+eiwi =
+n
+i=1
+ei
+
+
+n
+j=1
+Mijvj
+
+ ,
+2See [15] for a general introduction to the power method and the use of spectral decomposition to ﬁnd the rate of
+convergence of the vectors xk = Mkx0.

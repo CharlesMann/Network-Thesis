@@ -1,0 +1,83 @@
+THE $25,000,000,000 EIGENVECTOR 7
+3.2. Analysis of the matrix M. Note that Proposition 1 shows that V1(M) is nonempty
+since M is stochastic . The goal of this section is to show that V1(M) is in fact one-dimensional.
+This is a consequence of the following two propositions.
+Proposition 2. If M is positive and column-stochastic, then any eigenvector in V1(M) has all
+positive or all negative components. Proof. We use proof by contradiction. First note that in the
+standard triangle inequality | i yi| ≤ i |yi| (with all yi real) the inequality is strict when the yi
+are of mixed sign. Suppose x ∈ V1(M) contains elements of mixed sign. From x = Mx we have
+xi =
+n
+j=1 Mijxj and the summands Mijxj are of mixed sign (since Mij > 0). As a result we have
+a strict inequality
+|xi| =
+n
+j=1
+Mijxj <
+n
+j=1
+Mij|xj|. (3.4)
+Sum both sides of inequality (3.4) from i = 1 to i = n, and swap the i and j summations. Then use
+the fact that M is column-stochastic ( i Mij = 1 for all j) to ﬁnd
+n
+i=1
+|xi| <
+n
+i=1
+n
+j=1
+Mij|xj| =
+n
+j=1
+n
+i=1
+Mij |xj| =
+n
+j=1
+|xj|,
+a contradiction. Hence x cannot contain both positive and negative elements. If xi ≥ 0 for all i (and
+not all xi are zero) then xi > 0 follows immediately from xi =
+n
+j=1 Mijxj and Mij > 0. Similarly
+xi ≤ 0 for all i implies that each xi < 0.
+The following proposition will also be useful for analyzing dim(V1(M)):
+Proposition 3. Let v and w be linearly independent vectors in lRm
+, m ≥ 2. Then, for some
+values of s and t that are not both zero, the vector x = sv + tw has both positive and negative
+components. Proof. Linear independence implies neither v nor w is zero. Let d = i vi. If d = 0
+then v must contain components of mixed sign, and taking s = 1 and t = 0 yields the conclusion.
+If d = 0 set s = −
+P
+i wi
+d , t = 1, and x = sv + tw. Since v and w are independent x = 0. However,
+i xi = 0. We conclude that x has both positive and negative components.
+We can now prove that using M in place of A yields an unambiguous ranking for any web with
+no dangling nodes.
+Lemma 3.2. If M is positive and column-stochastic then V1(M) has dimension 1. Proof. We
+again use proof by contradiction. Suppose there are two linearly independent eigenvectors v and w
+in the subspace V1(M). For any real numbers s and t that are not both zero, the nonzero vector
+x = sv + tw must be in V1(M), and so have components that are all negative or all positive. But
+by Proposition 3, for some choice of s and t the vector x must contain components of mixed sign,
+a contradiction. We conclude that V1(M) cannot contain two linearly independent vectors, and so
+has dimension one.
+Lemma 3.2 provides the “punchline” for our analysis of the ranking algorithm using the matrix
+M (for 0 < m < 1). The space V1(M) is one-dimensional, and moreover, the relevant eigenvectors
+have entirely positive or negative components. We are thus guaranteed the existence of a unique
+eigenvector x ∈ V1(M) with positive components such that i xi = 1.
+Exercise 7. Prove that if A is an n × n column-stochastic matrix and 0 ≤ m ≤ 1, then
+M = (1 − m)A + mS is also a column-stochastic matrix.
+Exercise 8. Show that the product of two column-stochastic matrices is also column-stochastic.
+Exercise 9. Show that a page with no backlinks is given importance score m
+n by formula (3.2).
+Exercise 10. Suppose that A is the link matrix for a strongly connected web of n pages
+(any page can be reached from any other page by following a ﬁnite number of links). Show that
+dim(V1(A)) = 1 as follows. Let (Ak
+)ij denote the (i, j)-entry of Ak
+.
+• Note that page i can be reached from page j in one step if and only Aij > 0 (since Aij > 0
+means there’s a link from j to i!) Show that (A2
+)ij > 0 if and only if page i can be reached
+from page j in exactly two steps. Hint: (A2
+)ij = k AikAkj; all Aij are non-negative, so
+(A2
+)ij > 0 implies that for some k both Aik and Akj are positive.

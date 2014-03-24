@@ -1,0 +1,827 @@
+THE $25,000,000,000∗
+EIGENVECTOR
+THE LINEAR ALGEBRA BEHIND GOOGLE
+KURT BRYAN† AND TANYA LEISE‡
+Abstract. Google’s success derives in large part from its PageRank algorithm, which ranks the importance
+of webpages according to an eigenvector of a weighted link matrix. Analysis of the PageRank formula provides a
+wonderful applied topic for a linear algebra course. Instructors may assign this article as a project to more advanced
+students, or spend one or two lectures presenting the material with assigned homework from the exercises. This
+material also complements the discussion of Markov chains in matrix algebra. Maple and Mathematica ﬁles supporting
+this material can be found at www.rose-hulman.edu/∼bryan.
+Key words. linear algebra, PageRank, eigenvector, stochastic matrix
+AMS subject classiﬁcations. 15-01, 15A18, 15A51
+1. Introduction. When Google went online in the late 1990’s, one thing that set it apart
+from other search engines was that its search result listings always seemed deliver the “good stuﬀ”
+up front. With other search engines you often had to wade through screen after screen of links
+to irrelevant web pages that just happened to match the search text. Part of the magic behind
+Google is its PageRank algorithm, which quantitatively rates the importance of each page on the
+web, allowing Google to rank the pages and thereby present to the user the more important (and
+typically most relevant and helpful) pages ﬁrst.
+Understanding how to calculate PageRank is essential for anyone designing a web page that they
+want people to access frequently, since getting listed ﬁrst in a Google search leads to many people
+looking at your page. Indeed, due to Google’s prominence as a search engine, its ranking system
+has had a deep inﬂuence on the development and structure of the internet, and on what kinds of
+information and services get accessed most frequently. Our goal in this paper is to explain one of
+the core ideas behind how Google calculates web page rankings. This turns out to be a delightful
+application of standard linear algebra.
+Search engines such as Google have to do three basic things:
+1. Crawl the web and locate all web pages with public access.
+2. Index the data from step 1, so that it can be searched eﬃciently for relevant keywords or
+phrases.
+3. Rate the importance of each page in the database, so that when a user does a search and
+the subset of pages in the database with the desired information has been found, the more
+important pages can be presented ﬁrst.
+This paper will focus on step 3. In an interconnected web of pages, how can one meaningfully deﬁne
+and quantify the “importance” of any given page?
+The rated importance of web pages is not the only factor in how links are presented, but it is a
+signiﬁcant one. There are also successful ranking algorithms other than PageRank. The interested
+reader will ﬁnd a wealth of information about ranking algorithms and search engines, and we list
+just a few references for getting started (see the extensive bibliography in [9], for example, for a
+more complete list). For a brief overview of how Google handles the entire process see [6], and for
+an in-depth treatment of PageRank see [3] and a companion article [9]. Another article with good
+concrete examples is [5]. For more background on PageRank and explanations of essential principles
+of web design to maximize a website’s PageRank, go to the websites [4, 11, 14]. To ﬁnd out more
+about search engine principles in general and other ranking algorithms, see [2] and [8]. Finally, for
+an account of some newer approaches to searching the web, see [12] and [13].
+2. Developing a formula to rank pages.
+∗THE APPROXIMATE MARKET VALUE OF GOOGLE WHEN THE COMPANY WENT PUBLIC IN 2004.
+†Department of Mathematics, Rose-Hulman Institute of Technology, Terre Haute, IN 47803; email:
+kurt.bryan@rose-hulman.edu; phone: 812) 877-8485; fax: (812)877-8883.
+‡Mathematics and Computer Science Department, Amherst College, Amherst, MA 01002; email:
+tleise@amherst.edu; phone: (413)542-5411; fax: (413)542-2550.
+1
+2 K. BRYAN AND T. LEISE
+42
+31
+42
+31
+Fig. 2.1. An example of a web with only four pages. An arrow from page A to page B indicates a link from page
+A to page B.
+2.1. The basic idea. In what follows we will use the phrase “importance score” or just “score”
+for any quantitative rating of a web page’s importance. The importance score for any web page will
+always be a non-negative real number. A core idea in assigning a score to any given web page is
+that the page’s score is derived from the links made to that page from other web pages. The links
+to a given page are called the backlinks for that page. The web thus becomes a democracy where
+pages vote for the importance of other pages by linking to them.
+Suppose the web of interest contains n pages, each page indexed by an integer k, 1 ≤ k ≤ n. A
+typical example is illustrated in Figure 2.1, in which an arrow from page A to page B indicates a
+link from page A to page B. Such a web is an example of a directed graph.1
+We’ll use xk to denote
+the importance score of page k in the web. The xk is non-negative and xj > xk indicates that page j
+is more important than page k (so xj = 0 indicates page j has the least possible importance score).
+A very simple approach is to take xk as the number of backlinks for page k. In the example in
+Figure 2.1, we have x1 = 2, x2 = 1, x3 = 3, and x4 = 2, so that page 3 would be the most important,
+pages 1 and 4 tie for second, and page 2 is least important. A link to page k becomes a vote for
+page k’s importance.
+This approach ignores an important feature one would expect a ranking algorithm to have,
+namely, that a link to page k from an important page should boost page k’s importance score more
+than a link from an unimportant page. For example, a link to your homepage directly from Yahoo
+ought to boost your page’s score much more than a link from, say, www.kurtbryan.com (no relation
+to the author). In the web of Figure 2.1, pages 1 and 4 both have two backlinks: each links to
+the other, but page 1’s second backlink is from the seemingly important page 3, while page 4’s
+second backlink is from the relatively unimportant page 1. As such, perhaps we should rate page
+1’s importance higher than that of page 4.
+As a ﬁrst attempt at incorporating this idea let’s compute the score of page j as the sum of the
+scores of all pages linking to page j. For example, consider the web of Figure 2.1. The score of page
+1 would be determined by the relation x1 = x3 + x4. Since x3 and x4 will depend on x1 this scheme
+seems strangely self-referential, but it is the approach we will use, with one more modiﬁcation. Just
+as in elections, we don’t want a single individual to gain inﬂuence merely by casting multiple votes.
+In the same vein, we seek a scheme in which a web page doesn’t gain extra inﬂuence simply by
+linking to lots of other pages. If page j contains nj links, one of which links to page k, then we will
+boost page k’s score by xj/nj, rather than by xj. In this scheme each web page gets a total of one
+vote, weighted by that web page’s score, that is evenly divided up among all of its outgoing links. To
+quantify this for a web of n pages, let Lk ⊂ {1, 2, . . . , n} denote the set of pages with a link to page
+k, that is, Lk is the set of page k’s backlinks. For each k we require
+xk =
+j∈Lk
+xj
+nj
+, (2.1)
+where nj is the number of outgoing links from page j (which must be positive since if j ∈ Lk then
+1A graph consists of a set of vertices (in this context, the web pages) and a set of edges. Each edge joins a pair
+of vertices. The graph is undirected if the edges have no direction. The graph is directed if each edge (in the web
+context, the links) has a direction, that is, a starting and ending vertex.
+THE $25,000,000,000 EIGENVECTOR 3
+5
+42
+31
+5
+42
+31
+Fig. 2.2. A web of ﬁve pages, consisting of two disconnected “subwebs” W1 (pages 1 and 2) and W2 (pages 3,
+4, 5).
+page j links to at least page k!). We will assume that a link from a page to itself will not be counted.
+In this “democracy of the web” you don’t get to vote for yourself!
+Let’s apply this approach to the four-page web of Figure 2.1. For page 1 we have x1 = x3/1 +
+x4/2, since pages 3 and 4 are backlinks for page 1 and page 3 contains only one link, while page 4
+contains two links (splitting its vote in half). Similarly, x2 = x1/3, x3 = x1/3 + x2/2 + x4/2, and
+x4 = x1/3 + x2/2. These linear equations can be written Ax = x, where x = [x1 x2 x3 x4]T
+and
+A =
+
+
+
+
+0 0 1 1
+2
+1
+3 0 0 0
+1
+3
+1
+2 0 1
+2
+1
+3
+1
+2 0 0
+
+
+
+ . (2.2)
+This transforms the web ranking problem into the “standard” problem of ﬁnding an eigenvector
+for a square matrix! (Recall that the eigenvalues λ and eigenvectors x of a matrix A satisfy the
+equation Ax = λx, x = 0 by deﬁnition.) We thus seek an eigenvector x with eigenvalue 1 for the
+matrix A. We will refer to A as the “link matrix” for the given web.
+It turns out that the link matrix A in equation (2.2) does indeed have eigenvectors with eigen-
+value 1, namely, all multiples of the vector [12 4 9 6]T
+(recall that any non-zero multiple of an
+eigenvector is again an eigenvector). Let’s agree to scale these “importance score eigenvectors”
+so that the components sum to 1. In this case we obtain x1 = 12
+31 ≈ 0.387, x2 = 4
+31 ≈ 0.129,
+x3 = 9
+31 ≈ 0.290, and x4 = 6
+31 ≈ 0.194. Note that this ranking diﬀers from that generated by simply
+counting backlinks. It might seem surprising that page 3, linked to by all other pages, is not the
+most important. To understand this, note that page 3 links only to page 1 and so casts its entire
+vote for page 1. This, with the vote of page 2, results in page 1 getting the highest importance score.
+More generally, the matrix A for any web must have 1 as an eigenvalue if the web in question
+has no dangling nodes (pages with no outgoing links). To see this, ﬁrst note that for a general web
+of n pages formula (2.1) gives rise to a matrix A with Aij = 1/nj if page j links to page i, Aij = 0
+otherwise. The jth column of A then contains nj non-zero entries, each equal to 1/nj, and the
+column thus sums to 1. This motivates the following deﬁnition, used in the study of Markov chains:
+Definition 2.1. A square matrix is called a column-stochastic matrix if all of its entries
+are nonnegative and the entries in each column sum to one.
+The matrix A for a web with no dangling nodes is column-stochastic. We now prove
+Proposition 1. Every column-stochastic matrix has 1 as an eigenvalue. Proof. Let A be an
+n×n column-stochastic matrix and let e denote an n dimensional column vector with all entries equal
+to 1. Recall that A and its transpose AT
+have the same eigenvalues. Since A is column-stochastic
+it is easy to see that AT
+e = e, so that 1 is an eigenvalue for AT
+and hence for A.
+In what follows we use V1(A) to denote the eigenspace for eigenvalue 1 of a column-stochastic
+matrix A.
+2.2. Shortcomings. Several diﬃculties arise with using formula (2.1) to rank websites. In this
+section we discuss two issues: webs with non-unique rankings and webs with dangling nodes.
+2.2.1. Non-Unique Rankings. For our rankings it is desirable that the dimension of V1(A)
+equal one, so that there is a unique eigenvector x with i xi = 1 that we can use for importance
+scores. This is true in the web of Figure 2.1 and more generally is always true for the special case of
+4 K. BRYAN AND T. LEISE
+a strongly connected web (that is, you can get from any page to any other page in a ﬁnite number
+of steps); see Exercise 10 below.
+Unfortunately, it is not always true that the link matrix A will yield a unique ranking for all
+webs. Consider the web in Figure 2.2, for which the link matrix is
+A =
+
+
+
+
+
+
+0 1 0 0 0
+1 0 0 0 0
+0 0 0 1 1
+2
+0 0 1 0 1
+2
+0 0 0 0 0
+
+
+
+
+
+
+.
+We ﬁnd here that V1(A) is two-dimensional; one possible pair of basis vectors is x = [1/2, 1/2, 0, 0, 0]T
+and y = [0, 0, 1/2, 1/2, 0]T
+. But note that any linear combination of these two vectors yields another
+vector in V1(A), e.g., 3
+4 x + 1
+4 y = [3/8, 3/8, 1/8, 1/8, 0]T
+. It is not clear which, if any, of these
+eigenvectors we should use for the rankings!
+It is no coincidence that for the web of Figure 2.2 we ﬁnd that dim(V1(A)) > 1. It is a
+consequence of the fact that if a web W, considered as an undirected graph (ignoring which direction
+each arrows points), consists of r disconnected subwebs W1, . . . , Wr, then dim(V1(A)) ≥ r, and hence
+there is no unique importance score vector x ∈ V1(A) with i xi = 1. This makes intuitive sense: if
+a web W consists of r disconnected subwebs W1, . . . , Wr then one would expect diﬃculty in ﬁnding
+a common reference frame for comparing the scores of pages in one subweb with those in another
+subweb.
+Indeed, it is not hard to see why a web W consisting of r disconnected subwebs forces dim(V1(A)) ≥
+r. Suppose a web W has n pages and r component subwebs W1, . . . , Wr. Let ni denote the number
+of pages in Wi. Index the pages in W1 with indices 1 through n1, the pages in W2 with indices
+n1 + 1 through n1 + n2, the pages in W3 with n1 + n2 + 1 through n1 + n2 + n3, etc. In general,
+let Ni =
+i
+j=1 nj for i ≥ 1, with N0 = 0, so Wi contains pages Ni−1 + 1 through Ni. For example,
+in the web of Figure 2 we can take N1 = 2 and N2 = 5, so W1 contains pages 1 and 2, W2 contains
+pages 3, 4, and 5. The web in Figure 2.2 is a particular example of the general case, in which the
+matrix A assumes a block diagonal structure
+A =
+
+
+
+
+
+A1 0 . . . 0
+0 A2 0 0
+0
+...
+... 0
+0 0 0 Ar
+
+
+
+
+
+,
+where Ai denotes the link matrix for Wi. In fact, Wi can be considered as a web in its own right.
+Each ni × ni matrix Ai is column-stochastic, and hence possesses some eigenvector vi
+∈ lRni
+with
+eigenvector 1. For each i between 1 and r construct a vector wi
+∈ lRn
+which has 0 components for
+all elements corresponding to blocks other than block i. For example,
+w1
+=
+
+
+
+
+
+
+
+v1
+0
+0
+...
+0
+
+
+
+
+
+
+
+, w2
+=
+
+
+
+
+
+
+
+0
+v2
+0
+...
+0
+
+
+
+
+
+
+
+, . . .
+Then it is easy to see that the vectors wi
+, 1 ≤ i ≤ r, are linearly independent eigenvectors for A
+THE $25,000,000,000 EIGENVECTOR 5
+with eigenvalue 1 because
+Awi
+= A
+
+
+
+
+
+
+
+
+
+
+
+
+0
+...
+0
+vi
+0
+...
+0
+
+
+
+
+
+
+
+
+
+
+
+
+= wi
+.
+Thus V1(A) has dimension at least r.
+2.2.2. Dangling Nodes. Another diﬃculty may arise when using the matrix A to generate
+rankings. A web with dangling nodes produces a matrix A which contains one or more columns of
+all zeros. In this case A is column-substochastic, that is, the column sums of A are all less than or
+equal to one. Such a matrix must have all eigenvalues less than or equal to 1 in magnitude, but
+1 need not actually be an eigenvalue for A. Nevertheless, the pages in a web with dangling nodes
+can still be ranked use a similar technique. The corresponding substochastic matrix must have a
+positive eigenvalue λ ≤ 1 and a corresponding eigenvector x with non-negative entries (called the
+Perron eigenvector) that can be used to rank the web pages. See Exercise 4 below. We will not
+further consider the problem of dangling nodes here, however.
+Exercise 1. Suppose the people who own page 3 in the web of Figure 1 are infuriated by the
+fact that its importance score, computed using formula (2.1), is lower than the score of page 1. In
+an attempt to boost page 3’s score, they create a page 5 that links to page 3; page 3 also links to page
+5. Does this boost page 3’s score above that of page 1?
+Exercise 2. Construct a web consisting of three or more subwebs and verify that dim(V1(A))
+equals (or exceeds) the number of the components in the web.
+Exercise 3. Add a link from page 5 to page 1 in the web of Figure 2. The resulting web,
+considered as an undirected graph, is connected. What is the dimension of V1(A)?
+Exercise 4. In the web of Figure 2.1, remove the link from page 3 to page 1. In the resulting
+web page 3 is now a dangling node. Set up the corresponding substochastic matrix and ﬁnd its largest
+positive (Perron) eigenvalue. Find a non-negative Perron eigenvector for this eigenvalue, and scale
+the vector so that components sum to one. Does the resulting ranking seem reasonable?
+Exercise 5. Prove that in any web the importance score of a page with no backlinks is zero.
+Exercise 6. Implicit in our analysis up to this point is the assertion that the manner in which
+the pages of a web W are indexed has no eﬀect on the importance score assigned to any given page.
+Prove this, as follows: Let W contains n pages, each page assigned an index 1 through n, and let
+A be the resulting link matrix. Suppose we then transpose the indices of pages i and j (so page i is
+now page j and vice-versa). Let ˜A be the link matrix for the relabelled web.
+• Argue that ˜A = PAP, where P is the elementary matrix obtained by transposing rows i and
+j of the n × n identity matrix. Note that the operation A → PA has the eﬀect of swapping
+rows i and j of A, while A → AP swaps columns i and j. Also, P2
+= I, the identity
+matrix.
+• Suppose that x is an eigenvector for A, so Ax = λx for some λ. Show that y = Px is an
+eigenvector for ˜A with eigenvalue λ.
+• Explain why this shows that transposing the indices of any two pages leaves the importance
+scores unchanged, and use this result to argue that any permutation of the page indices leaves
+the importance scores unchanged.
+3. A remedy for dim(V1(A)) > 1. An enormous amount of computing resources are needed
+to determine an eigenvector for the link matrix corresponding to a web containing billions of pages.
+It is thus important to know that our algorithm will yield a unique set of sensible web rankings.
+The analysis above shows that our ﬁrst attempt to rank web pages leads to diﬃculties if the web
+isn’t connected. And the worldwide web, treated as an undirected graph, contains many disjoint
+components; see [9] for some interesting statistics concerning the structure of the web.
+6 K. BRYAN AND T. LEISE
+Below we present and analyze a modiﬁcation of the above method that is guaranteed to overcome
+this shortcoming. The analysis that follows is basically a special case of the Perron-Frobenius
+theorem, and we only prove what we need for this application. For a full statement and proof of the
+Perron-Frobenius theorem, see chapter 8 in [10].
+3.1. A modiﬁcation to the link matrix A. For an n page web with no dangling nodes
+we can generate unambiguous importance scores as follows, including cases of web with multiple
+subwebs.
+Let S denote an n × n matrix with all entries 1/n. The matrix S is column-stochastic, and it is
+easy to check that V1(S) is one-dimensional. We will replace the matrix A with the matrix
+M = (1 − m)A + mS, (3.1)
+where 0 ≤ m ≤ 1. M is a weighted average of A and S. The value of m originally used by Google
+is reportedly 0.15 [9, 11]. For any m ∈ [0, 1] the matrix M is column-stochastic and we show below
+that V1(M) is always one-dimensional if m ∈ (0, 1]. Thus M can be used to compute unambiguous
+importance scores. In the case when m = 0 we have the original problem, for then M = A. At the
+other extreme is m = 1, yielding M = S. This is the ultimately egalitarian case: the only normalized
+eigenvector x with eigenvalue 1 has xi = 1/n for all i and all web pages are rated equally important.
+Using M in place of A gives a web page with no backlinks (a dangling node) the importance
+score of m/n (Exercise 9), and the matrix M is substochastic for any m < 1 since the matrix A is
+substochastic. Therefore the modiﬁed formula yields nonzero importance scores for dangling links
+(if m > 0) but does not resolve the issue of dangling nodes. In the remainder of this article, we only
+consider webs with no dangling nodes.
+The equation x = Mx can also be cast as
+x = (1 − m)Ax + ms, (3.2)
+where s is a column vector with all entries 1/n. Note that Sx = s if i xi = 1.
+We will prove below that V1(M) is always one-dimensional, but ﬁrst let’s look at a couple of
+examples.
+Example 1: For the web of four pages in Figure 2.1 with matrix A given by (2.2), the new
+formula gives (with m = 0.15)
+M =
+
+
+
+
+0.0375 0.0375 0.8875 0.4625
+0.3208¯3 0.0375 0.0375 0.0375
+0.3208¯3 0.4625 0.0375 0.4625
+0.3208¯3 0.4625 0.0375 0.0375
+
+
+
+ ,
+and yields importance scores x1 ≈ 0.368, x2 ≈ 0.142, x3 ≈ 0.288, and x4 ≈ 0.202. This yields the
+same ranking of pages as the earlier computation, but the scores are slightly diﬀerent.
+Example 2 shows more explicitly the advantages of using M in place of A.
+Example 2: As a second example, for the web of Figure 2.2 with m = 0.15 we obtain the matrix
+M =
+
+
+
+
+
+
+0.03 0.88 0.03 0.03 0.03
+0.88 0.03 0.03 0.03 0.03
+0.03 0.03 0.03 0.88 0.455
+0.03 0.03 0.88 0.03 0.455
+0.03 0.03 0.03 0.03 0.03
+
+
+
+
+
+
+. (3.3)
+The space V1(M) is indeed one-dimensional, with normalized eigenvector components of x1 =
+0.2, x2 = 0.2, x3 = 0.285, x4 = 0.285, and x5 = 0.03. The modiﬁcation, using M instead of A,
+allows us to compare pages in diﬀerent subwebs.
+Each entry Mij of M deﬁned by equation (3.1) is strictly positive, which motivates the following
+deﬁnition.
+Definition 3.1. A matrix M is positive if Mij > 0 for all i and j. This is the key property
+that guarantees dim(V1(M)) = 1, which we prove in the next section.
+THE $25,000,000,000 EIGENVECTOR 7
+3.2. Analysis of the matrix M. Note that Proposition 1 shows that V1(M) is nonempty
+since M is stochastic . The goal of this section is to show that V1(M) is in fact one-dimensional.
+This is a consequence of the following two propositions.
+Proposition 2. If M is positive and column-stochastic, then any eigenvector in V1(M) has all
+positive or all negative components. Proof. We use proof by contradiction. First note that in the
+standard triangle inequality | i yi| ≤ i |yi| (with all yi real) the inequality is strict when the yi
+are of mixed sign. Suppose x ∈ V1(M) contains elements of mixed sign. From x = Mx we have
+xi =
+n
+j=1 Mijxj and the summands Mijxj are of mixed sign (since Mij > 0). As a result we have
+a strict inequality
+|xi| =
+n
+j=1
+Mijxj <
+n
+j=1
+Mij|xj|. (3.4)
+Sum both sides of inequality (3.4) from i = 1 to i = n, and swap the i and j summations. Then use
+the fact that M is column-stochastic ( i Mij = 1 for all j) to ﬁnd
+n
+i=1
+|xi| <
+n
+i=1
+n
+j=1
+Mij|xj| =
+n
+j=1
+n
+i=1
+Mij |xj| =
+n
+j=1
+|xj|,
+a contradiction. Hence x cannot contain both positive and negative elements. If xi ≥ 0 for all i (and
+not all xi are zero) then xi > 0 follows immediately from xi =
+n
+j=1 Mijxj and Mij > 0. Similarly
+xi ≤ 0 for all i implies that each xi < 0.
+The following proposition will also be useful for analyzing dim(V1(M)):
+Proposition 3. Let v and w be linearly independent vectors in lRm
+, m ≥ 2. Then, for some
+values of s and t that are not both zero, the vector x = sv + tw has both positive and negative
+components. Proof. Linear independence implies neither v nor w is zero. Let d = i vi. If d = 0
+then v must contain components of mixed sign, and taking s = 1 and t = 0 yields the conclusion.
+If d = 0 set s = −
+P
+i wi
+d , t = 1, and x = sv + tw. Since v and w are independent x = 0. However,
+i xi = 0. We conclude that x has both positive and negative components.
+We can now prove that using M in place of A yields an unambiguous ranking for any web with
+no dangling nodes.
+Lemma 3.2. If M is positive and column-stochastic then V1(M) has dimension 1. Proof. We
+again use proof by contradiction. Suppose there are two linearly independent eigenvectors v and w
+in the subspace V1(M). For any real numbers s and t that are not both zero, the nonzero vector
+x = sv + tw must be in V1(M), and so have components that are all negative or all positive. But
+by Proposition 3, for some choice of s and t the vector x must contain components of mixed sign,
+a contradiction. We conclude that V1(M) cannot contain two linearly independent vectors, and so
+has dimension one.
+Lemma 3.2 provides the “punchline” for our analysis of the ranking algorithm using the matrix
+M (for 0 < m < 1). The space V1(M) is one-dimensional, and moreover, the relevant eigenvectors
+have entirely positive or negative components. We are thus guaranteed the existence of a unique
+eigenvector x ∈ V1(M) with positive components such that i xi = 1.
+Exercise 7. Prove that if A is an n × n column-stochastic matrix and 0 ≤ m ≤ 1, then
+M = (1 − m)A + mS is also a column-stochastic matrix.
+Exercise 8. Show that the product of two column-stochastic matrices is also column-stochastic.
+Exercise 9. Show that a page with no backlinks is given importance score m
+n by formula (3.2).
+Exercise 10. Suppose that A is the link matrix for a strongly connected web of n pages
+(any page can be reached from any other page by following a ﬁnite number of links). Show that
+dim(V1(A)) = 1 as follows. Let (Ak
+)ij denote the (i, j)-entry of Ak
+.
+• Note that page i can be reached from page j in one step if and only Aij > 0 (since Aij > 0
+means there’s a link from j to i!) Show that (A2
+)ij > 0 if and only if page i can be reached
+from page j in exactly two steps. Hint: (A2
+)ij = k AikAkj; all Aij are non-negative, so
+(A2
+)ij > 0 implies that for some k both Aik and Akj are positive.
+8 K. BRYAN AND T. LEISE
+• Show more generally that (Ap
+)ij > 0 if and only if page i can be reached from page j in
+EXACTLY p steps.
+• Argue that (I + A + A2
++ · · · + Ap
+)ij > 0 if and only if page i can be reached from page j
+in p or fewer steps (note p = 0 is a legitimate choice—any page can be reached from itself
+in zero steps!)
+• Explain why I + A + A2
++ · · · + An−1
+is a positive matrix if the web is strongly connected.
+• Use the last part (and Exercise 8) so show that B = 1
+n (I + A + A2
++ · · · + An−1
+) is positive
+and column-stochastic (and hence by Lemma 3.2, dim(V1(B)) = 1).
+• Show that if x ∈ V1(A) then x ∈ V1(B). Why does this imply that dim(V1(A)) = 1?
+Exercise 11. Consider again the web in Figure 2.1, with the addition of a page 5 that links to
+page 3, where page 3 also links to page 5. Calculate the new ranking by ﬁnding the eigenvector of
+M (corresponding to λ = 1) that has positive components summing to one. Use m = 0.15.
+Exercise 12. Add a sixth page that links to every page of the web in the previous exercise, but
+to which no other page links. Rank the pages using A, then using M with m = 0.15, and compare
+the results.
+Exercise 13. Construct a web consisting of two or more subwebs and determine the ranking
+given by formula (3.1).
+At present the web contains at least eight billion pages—how does one compute an eigenvector
+for an eight billion by eight billion matrix? One reasonable approach is an iterative procedure called
+the power method (along with modiﬁcations) that we will now examine for the special case at hand.
+It is worth noting that there is much additional analysis one can do, and many improved methods
+for the computation of PageRank. The reference [7] provides a typical example and additional
+references.
+4. Computing the Importance Score Eigenvector. The rough idea behind the power
+method2
+for computing an eigenvector of a matrix M is this: One starts with a “typical” vector
+x0, then generates the sequence xk = Mxk−1 (so xk = Mk
+x0) and lets k approaches inﬁnity. The
+vector xk is, to good approximation, an eigenvector for the dominant (largest magnitude) eigenvalue
+of M. However, depending on the magnitude of this eigenvalue, the vector xk may also grow
+without bound or decay to the zero vector. One thus typically rescales at each iteration, say by
+computing xk = Mxk−1
+Mxk−1
+, where · can be any vector norm. The method generally requires that
+the corresponding eigenspace be one-dimensional, a condition that is satisﬁed in the case when M
+is deﬁned by equation (3.1).
+To use the power method on the matrices M that arise from the web ranking problem we would
+generally need to know that any other eigenvalues λ of M satisfy |λ| < 1. This assures that the
+power method will converge to the eigenvector we want. Actually, the following proposition provides
+what we need, with no reference to any other eigenvalues of M!
+Definition 4.1. The 1-norm of a vector v is v 1 = i |vi|.
+Proposition 4. Let M be a positive column-stochastic n × n matrix and let V denote the
+subspace of lRn
+consisting of vectors v such that j vj = 0. Then Mv ∈ V for any v ∈ V , and
+Mv 1 ≤ c v 1
+for any v ∈ V , where c = max1≤j≤n |1 − 2 min1≤i≤n Mij| < 1. Proof. To see that Mv ∈ V is
+straightforward: Let w = Mv, so that wi =
+n
+j=1 Mijvj and
+n
+i=1
+wi =
+n
+i=1
+n
+j=1
+Mijvj =
+n
+j=1
+vj
+n
+i=1
+Mij =
+n
+j=1
+vj = 0.
+Hence w = Mv ∈ V . To prove the bound in the proposition note that
+w 1 =
+n
+i=1
+eiwi =
+n
+i=1
+ei
+
+
+n
+j=1
+Mijvj
+
+ ,
+2See [15] for a general introduction to the power method and the use of spectral decomposition to ﬁnd the rate of
+convergence of the vectors xk = Mkx0.
+THE $25,000,000,000 EIGENVECTOR 9
+where ei = sgn(wi). Note that the ei are not all of one sign, since i wi = 0 (unless w ≡ 0 in which
+case the bound clearly holds). Reverse the double sum to obtain
+w 1 =
+n
+j=1
+vj
+n
+i=1
+eiMij =
+n
+j=1
+ajvj, (4.1)
+where aj =
+n
+i=1 eiMij. Since the ei are of mixed sign and i Mij = 1 with 0 < Mij < 1, it is easy
+to see that
+−1 < −1 + 2 min
+1≤i≤n
+Mij ≤ aj ≤ 1 − 2 min
+1≤i≤n
+Mij < 1.
+We can thus bound
+|aj| ≤ |1 − 2 min
+1≤i≤n
+Mij| < 1.
+Let c = max1≤j≤n |1 − 2 min1≤i≤n Mij|. Observe that c < 1 and |aj| ≤ c for all j. From equation
+(4.1) we have
+w 1 =
+n
+j=1
+ajvj =
+n
+j=1
+ajvj ≤
+n
+j=1
+|aj||vj| ≤ c
+n
+j=1
+|vj| = c v 1,
+which proves the proposition.
+Proposition 4 sets the stage for the following proposition.
+Proposition 5. Every positive column-stochastic matrix M has a unique vector q with positive
+components such that Mq = q with q 1 = 1. The vector q can be computed as q = limk→∞ Mk
+x0
+for any initial guess x0 with positive components such that x0 1 = 1. Proof. From Proposition
+1 the matrix M has 1 as an eigenvalue and by Lemma 3.2 the subspace V1(M) is one-dimensional.
+Also, all non-zero vectors in V1(M) have entirely positive or negative components. It is clear that
+there is a unique vector q ∈ V1(M) with positive components such that i qi = 1.
+Let x0 be any vector in lRn
+with positive components such that x0 1 = 1. We can write
+x0 = q + v where v ∈ V (V as in Proposition 4). We ﬁnd that Mk
+x0 = Mk
+q + Mk
+v = q + Mk
+v.
+As a result
+Mk
+x0 − q = Mk
+v. (4.2)
+A straightforward induction and Proposition 4 shows that Mk
+v 1 ≤ ck
+v 1 for 0 ≤ c < 1 (c as in
+Proposition 4) and so limk→∞ Mk
+v 1 = 0. From equation (4.2) we conclude that limk→∞ Mk
+x0 =
+q.
+Example: Let M be the matrix deﬁned by equation (3.3) for the web of Figure 2.2. We take
+x0 = [0.24, 0.31, 0.08, 0.18, 0.19]T
+as an initial guess; recall that we had q = [0.2, 0.2, 0.285, 0.285, 0.03]T
+.
+The table below shows the value of Mk
+x0 − q 1 for several values of k, as well as the ratio
+Mk
+x0 − q 1/ Mk−1
+x0 − q 1. Compare this ratio to c from Proposition 4, which in this case is
+0.94.
+k Mk
+x0 − q 1
+Mk
+x0−q 1
+Mk−1x0−q 1
+0 0.62
+1 0.255 0.411
+5 0.133 0.85
+10 0.0591 0.85
+50 8.87 × 10−5
+0.85
+It is clear that the bound Mk
+x0 − q 1 ≤ ck
+x0 − q 1 is rather pessimistic (note 0.85 is the value
+1 − m, and 0.85 turns out to be the second largest eigenvalue for M). One can show that in general
+the power method will converge asymptotically according to Mxk − q 1 ≈ |λ2| x − q 1, where λ2
+10 K. BRYAN AND T. LEISE
+is the second largest eigenvalue of M. Moreover, for M of the form M = (1 − m)A + mS with A
+column-stochastic and all Sij = 1/n it can be shown that |λ2| ≤ 1−m (see, e.g., [1], Theorem 5.10).
+As a result, the power method will converge much more rapidly than indicated by ck
+x0 − q 1.
+Nonetheless, the value of c in Proposition 4 provides a very simple bound on the convergence of the
+power method here. It is easy to see that since all entries of M are at least m/n, we will always
+have c ≤ 1 − 2m/n in Proposition 4.
+As a practical matter, note that the n × n positive matrix M has no non-zero elements, so the
+multiplication Mv for v ∈ lRn
+will typically take O(n2
+) multiplications and additions, a formidable
+computation if n = 8, 000, 000, 000. But equation (3.2) shows that if x is positive with x 1 = 1 then
+the multiplication Mx is equivalent to (1 − m)Ax + ms. This is a far more eﬃcient computation,
+since A can be expected to contain mostly zeros (most web pages link to only a few other pages).
+We’ve now proved our main theorem:
+Theorem 4.2. The matrix M deﬁned by (3.1) for a web with no dangling nodes will always be a
+positive column-stochastic matrix and so have a unique q with positive components such that Mq = q
+and i qi = 1. The vector q may be computed as the limit of iterations xk = (1 − m)Axk−1 + ms,
+where x0 is any initial vector with positive components and x0 1 = 1.
+The eigenvector x deﬁned by equation (3.2) also has a probabilistic interpretation. Consider a
+web-surfer on a web of n pages with no dangling nodes. The surfer begins at some web page (it
+doesn’t matter where) and randomly moves from web page to web page according to the following
+procedure: If the surfer is currently at a page with r outgoing links, he either randomly chooses any
+one of these links with uniform probability 1−m
+r OR he jumps to any randomly selected page on the
+web, each with probability m
+n (note that r1−m
+r +nm
+n = 1, so this accounts for everything he can do).
+The surfer repeats this page-hopping procedure ad inﬁnitum. The component xj of the normalized
+vector x in equation (3.2) is the fraction of time that the surfer spends, in the long run, on page j
+of the web. More important pages tend to be linked to by many other pages and so the surfer hits
+those most often.
+Exercise 14. For the web in Exercise 11, compute the values of Mk
+x0 −q 1 and Mk
+x0−q 1
+Mk−1x0−q 1
+for k = 1, 5, 10, 50, using an initial guess x0 not too close to the actual eigenvector q (so that you
+can watch the convergence). Determine c = max1≤j≤n |1 − 2 min1≤i≤n Mij| and the absolute value
+of the second largest eigenvalue of M.
+Exercise 15. To see why the second largest eigenvalue plays a role in bounding Mk
+x0−q 1
+Mk−1x0−q 1
+,
+consider an n × n positive column-stochastic matrix M that is diagonalizable. Let x0 be any vector
+with non-negative components that sum to one. Since M is diagonalizable, we can create a basis
+of eigenvectors {q, v1, . . . , vn−1}, where q is the steady state vector, and then write x0 = aq +
+n−1
+k=1 bkvk. Determine Mk
+x0, and then show that a = 1 and the sum of the components of each
+vk must equal 0. Next apply Proposition 4 to prove that, except for the non-repeated eigenvalue
+λ = 1, the other eigenvalues are all strictly less than one in absolute value. Use this to evaluate
+limk→∞
+Mk
+x0−q 1
+Mk−1x0−q 1
+.
+Exercise 16. Consider the link matrix
+A =
+
+
+0 1
+2
+1
+2
+0 0 1
+2
+1 1
+2 0
+
+ .
+Show that M = (1 − m)A + mS (all Sij = 1/3) is not diagonalizable for 0 ≤ m < 1.
+Exercise 17. How should the value of m be chosen? How does this choice aﬀect the rankings
+and the computation time?
+REFERENCES
+[1] A. Berman and R. Plemmons, Nonnegative Matrices in the Mathematical Sciences, Academic Press, New
+York, 1979.
+[2] M. W. Berry and M. Browne, Understanding Search Engines: Mathematical Modeling and Text Retrieval,
+Second Edition, SIAM, Philadelphia, 2005.
+[3] M. Bianchini, M. Gori, and F. Scarselli, Inside PageRank, ACM Trans. Internet Tech., 5 (2005), pp. 92–128.
+THE $25,000,000,000 EIGENVECTOR 11
+[4] S. Brin and L. Page, The anatomy of a large-scale hypertextual web search engine,
+http : //www − db.stanford.edu/ ∼ backrub/google.html (accessed August 1, 2005).
+[5] A. Farahat, T. Lofaro, J. C. Miller, G. Rae, and L.A. Ward, Authority Rankings from HITS, PageRank,
+and SALSA: Existence, Uniqueness, and Eﬀect of Initialization, SIAM J. Sci. Comput., 27 (2006), pp.
+1181-1201.
+[6] A. Hill, Google Inside Out, Maximum PC, April 2004, pp. 44-48.
+[7] S. Kamvar, T. Haveliwala, and G. Golub, Adaptive methods for the computation of PageRank, Linear
+Algebra Appl., 386 (2004), pp. 51–65.
+[8] A. N. Langville and C. D. Meyer, A survey of eigenvector methods of web information retrieval, SIAM
+Review, 47 (2005), pp. 135-161.
+[9] A. N. Langville and C. D. Meyer, Deeper inside PageRank, Internet Math., 1 (2005), pp. 335–380.
+[10] C. D. Meyer, Matrix Analysis and Applied Linear Algebra, SIAM, Philadelphia, 2000.
+[11] Cleve Moler, The world’s largest matrix computation, http : //www.mathworks.com/company/newsletters/news notes
+/clevescorner/oct02 cleve.html (accessed August 1, 2005).
+[12] Mostafa, J., Seeking better web searches, Sci. Amer., 292 (2005), pp. 66-73.
+[13] Sara Robinson, The Ongoing search for eﬃcient web search algorithms, SIAM News, 37 (Nov 2004).
+[14] Ian Rogers, The Google Pagerank algorithm and how it works, http : //www.iprcom.com/papers/pagerank/
+(accessed August 1, 2005).
+[15] W. J. Stewart, An Introduction to the Numerical Solution of Markov Chains, Princeton University Press,
+Princeton, 1994.
+

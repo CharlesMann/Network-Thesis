@@ -1,0 +1,122 @@
+4 K. BRYAN AND T. LEISE
+a strongly connected web (that is, you can get from any page to any other page in a ﬁnite number
+of steps); see Exercise 10 below.
+Unfortunately, it is not always true that the link matrix A will yield a unique ranking for all
+webs. Consider the web in Figure 2.2, for which the link matrix is
+A =
+
+
+
+
+
+
+0 1 0 0 0
+1 0 0 0 0
+0 0 0 1 1
+2
+0 0 1 0 1
+2
+0 0 0 0 0
+
+
+
+
+
+
+.
+We ﬁnd here that V1(A) is two-dimensional; one possible pair of basis vectors is x = [1/2, 1/2, 0, 0, 0]T
+and y = [0, 0, 1/2, 1/2, 0]T
+. But note that any linear combination of these two vectors yields another
+vector in V1(A), e.g., 3
+4 x + 1
+4 y = [3/8, 3/8, 1/8, 1/8, 0]T
+. It is not clear which, if any, of these
+eigenvectors we should use for the rankings!
+It is no coincidence that for the web of Figure 2.2 we ﬁnd that dim(V1(A)) > 1. It is a
+consequence of the fact that if a web W, considered as an undirected graph (ignoring which direction
+each arrows points), consists of r disconnected subwebs W1, . . . , Wr, then dim(V1(A)) ≥ r, and hence
+there is no unique importance score vector x ∈ V1(A) with i xi = 1. This makes intuitive sense: if
+a web W consists of r disconnected subwebs W1, . . . , Wr then one would expect diﬃculty in ﬁnding
+a common reference frame for comparing the scores of pages in one subweb with those in another
+subweb.
+Indeed, it is not hard to see why a web W consisting of r disconnected subwebs forces dim(V1(A)) ≥
+r. Suppose a web W has n pages and r component subwebs W1, . . . , Wr. Let ni denote the number
+of pages in Wi. Index the pages in W1 with indices 1 through n1, the pages in W2 with indices
+n1 + 1 through n1 + n2, the pages in W3 with n1 + n2 + 1 through n1 + n2 + n3, etc. In general,
+let Ni =
+i
+j=1 nj for i ≥ 1, with N0 = 0, so Wi contains pages Ni−1 + 1 through Ni. For example,
+in the web of Figure 2 we can take N1 = 2 and N2 = 5, so W1 contains pages 1 and 2, W2 contains
+pages 3, 4, and 5. The web in Figure 2.2 is a particular example of the general case, in which the
+matrix A assumes a block diagonal structure
+A =
+
+
+
+
+
+A1 0 . . . 0
+0 A2 0 0
+0
+...
+... 0
+0 0 0 Ar
+
+
+
+
+
+,
+where Ai denotes the link matrix for Wi. In fact, Wi can be considered as a web in its own right.
+Each ni × ni matrix Ai is column-stochastic, and hence possesses some eigenvector vi
+∈ lRni
+with
+eigenvector 1. For each i between 1 and r construct a vector wi
+∈ lRn
+which has 0 components for
+all elements corresponding to blocks other than block i. For example,
+w1
+=
+
+
+
+
+
+
+
+v1
+0
+0
+...
+0
+
+
+
+
+
+
+
+, w2
+=
+
+
+
+
+
+
+
+0
+v2
+0
+...
+0
+
+
+
+
+
+
+
+, . . .
+Then it is easy to see that the vectors wi
+, 1 ≤ i ≤ r, are linearly independent eigenvectors for A

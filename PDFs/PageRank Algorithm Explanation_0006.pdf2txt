@@ -1,0 +1,72 @@
+6 K. BRYAN AND T. LEISE
+Below we present and analyze a modiﬁcation of the above method that is guaranteed to overcome
+this shortcoming. The analysis that follows is basically a special case of the Perron-Frobenius
+theorem, and we only prove what we need for this application. For a full statement and proof of the
+Perron-Frobenius theorem, see chapter 8 in [10].
+3.1. A modiﬁcation to the link matrix A. For an n page web with no dangling nodes
+we can generate unambiguous importance scores as follows, including cases of web with multiple
+subwebs.
+Let S denote an n × n matrix with all entries 1/n. The matrix S is column-stochastic, and it is
+easy to check that V1(S) is one-dimensional. We will replace the matrix A with the matrix
+M = (1 − m)A + mS, (3.1)
+where 0 ≤ m ≤ 1. M is a weighted average of A and S. The value of m originally used by Google
+is reportedly 0.15 [9, 11]. For any m ∈ [0, 1] the matrix M is column-stochastic and we show below
+that V1(M) is always one-dimensional if m ∈ (0, 1]. Thus M can be used to compute unambiguous
+importance scores. In the case when m = 0 we have the original problem, for then M = A. At the
+other extreme is m = 1, yielding M = S. This is the ultimately egalitarian case: the only normalized
+eigenvector x with eigenvalue 1 has xi = 1/n for all i and all web pages are rated equally important.
+Using M in place of A gives a web page with no backlinks (a dangling node) the importance
+score of m/n (Exercise 9), and the matrix M is substochastic for any m < 1 since the matrix A is
+substochastic. Therefore the modiﬁed formula yields nonzero importance scores for dangling links
+(if m > 0) but does not resolve the issue of dangling nodes. In the remainder of this article, we only
+consider webs with no dangling nodes.
+The equation x = Mx can also be cast as
+x = (1 − m)Ax + ms, (3.2)
+where s is a column vector with all entries 1/n. Note that Sx = s if i xi = 1.
+We will prove below that V1(M) is always one-dimensional, but ﬁrst let’s look at a couple of
+examples.
+Example 1: For the web of four pages in Figure 2.1 with matrix A given by (2.2), the new
+formula gives (with m = 0.15)
+M =
+
+
+
+
+0.0375 0.0375 0.8875 0.4625
+0.3208¯3 0.0375 0.0375 0.0375
+0.3208¯3 0.4625 0.0375 0.4625
+0.3208¯3 0.4625 0.0375 0.0375
+
+
+
+ ,
+and yields importance scores x1 ≈ 0.368, x2 ≈ 0.142, x3 ≈ 0.288, and x4 ≈ 0.202. This yields the
+same ranking of pages as the earlier computation, but the scores are slightly diﬀerent.
+Example 2 shows more explicitly the advantages of using M in place of A.
+Example 2: As a second example, for the web of Figure 2.2 with m = 0.15 we obtain the matrix
+M =
+
+
+
+
+
+
+0.03 0.88 0.03 0.03 0.03
+0.88 0.03 0.03 0.03 0.03
+0.03 0.03 0.03 0.88 0.455
+0.03 0.03 0.88 0.03 0.455
+0.03 0.03 0.03 0.03 0.03
+
+
+
+
+
+
+. (3.3)
+The space V1(M) is indeed one-dimensional, with normalized eigenvector components of x1 =
+0.2, x2 = 0.2, x3 = 0.285, x4 = 0.285, and x5 = 0.03. The modiﬁcation, using M instead of A,
+allows us to compare pages in diﬀerent subwebs.
+Each entry Mij of M deﬁned by equation (3.1) is strictly positive, which motivates the following
+deﬁnition.
+Definition 3.1. A matrix M is positive if Mij > 0 for all i and j. This is the key property
+that guarantees dim(V1(M)) = 1, which we prove in the next section.

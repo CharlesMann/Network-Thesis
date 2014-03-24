@@ -1,0 +1,51 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{fancybox}
+\pagestyle{plain}
+
+\begin{document}
+
+THE {\$} 25,000,000,000$*$ EIGENVECTOR
+
+THE LINEAR ALGEBRA BEHIND GOOGLE
+
+KURT BRYAN$\dagger$ AND TANYA LEISE$\ddagger$
+
+Abstract. Google's success derives in large part from its PageRank algorithm, which ranks the importance of webpages according to an eigenvector of a weighted link matrix. Analysis of the PageRank formula provides a wonderful applied topic for a linear algebra course. Instructors may assign this article as a project to more advanced students, or spend one or two lectures presenting the material with assigned homework from the exercises. This material also complements the discussion of Markov chains in matrix algebra. Maple and Mathematica files supporting this material can be found at www.rose-hulman. $\mathrm{e}\mathrm{d}\mathrm{u}/\sim \mathrm{b}\mathrm{r}\mathrm{y}\mathrm{a}\mathrm{n}$.
+
+Key words. linear algebra, PageRank, eigenvector, stochastic matrix
+
+AMS subject classifications. 15-01, $15\mathrm{A}18,15\mathrm{A}51$
+
+1. Introduction.
+
+When Google went online in the late $1990' \mathrm{s}$, one thing that set it apart from other search engines was that its search result listings always seemed deliver the ``good stuff'' up front. With other search engines you often had to wade through screen after screen of links to irrelevant web pages that just happened to match the search text. Part of the magic behind Google is its PageRank algorithm, which quantitatively rates the importance of each page on the web, allowing Google to rank the pages and thereby present to the user the more important (and typically most relevant and helpful) pages first.
+
+Understanding how to calculate PageRank is essential for anyone designing a web page that they want people to access frequently, since getting listed first in a Google search leads to many people looking at your page. Indeed, due to Google's prominence as a search engine, its ranking system has had a deep influence on the development and structure of the internet, and on what kinds of information and services get accessed most frequently. Our goal in this paper is to explain one of the core ideas behind how Google calculates web page rankings. This turns out to be a delightful application of standard linear algebra.
+
+Search engines such as Google have to do three basic things:
+
+1. Crawl the web and locate all web pages with public access.
+
+2. Index the data from step 1, so that it can be searched efficiently for relevant keywords or phrases.
+
+3. Rate the importance of each page in the database, so that when a user does a search and the subset of pages in the database with the desired information has been found, the more important pages can be presented first.
+
+This paper will focus on step 3. In an interconnected web of pages, how can one meaningfully define and quantify the ``importance'' of any given page?
+
+The rated importance of web pages is not the only factor in how links are presented, but it is a significant one. There are also successful ranking algorithms other than PageRank. The interested reader will find a wealth of information about ranking algorithms and search engines, and we list just a few references for getting started (see the extensive bibliography in [9], for example, for a more complete list). For a brief overview of how Google handles the entire process see [6], and for an in-depth treatment of PageRank see [3] and a companion article [9]. Another article with good concrete examples is [5]. For more background on PageRank and explanations of essential principles of web design to maximize a website's PageRank, go to the websites [4, 11, 14]. To find out more about search engine principles in general and other ranking algorithms, see [2] and [8]. Finally, for an account of some newer approaches to searching the web, see [12] and [13].
+
+2. Developing a formula to rank pages.
+
+$*$THE APPROXIMATE MARKET VALUE OF GOOGLE WHEN THE COMPANY WENT PUBLIC IN 2004. $\dagger$Department of Mathematics, Rose-Hulman Institute of Technology, Terre Haute, $\mathrm{I}\mathrm{N}$ 47803; email: kurt. bryan\copyright rose-hulman. $\mathrm{e}\mathrm{d}\mathrm{u}$; phone: 812) 877-8485; fax: $(812)877-8883$.
+
+$\ddagger$Mathematics and Computer Science Department, Amherst College, Amherst, $\mathrm{M}\mathrm{A}$ 01002; email: tleise\copyright amherst. $\mathrm{e}\mathrm{d}\mathrm{u}$; phone: $(413)542-5411$; fax: $(413)542-2550$.
+
+1
+
+\end{document}

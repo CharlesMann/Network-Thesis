@@ -1,0 +1,19 @@
+language = English
+resolution = 600
+columnStyle = 0
+character recognition .. 
+PageRank Algorithm Explanation_0001.tif  image pre-processing ...
+PageRank Algorithm Explanation_0001.tif  character recognition
+PageRank Algorithm Explanation_0001.tif  character recognition 1
+Result of of Infty
+LRect=(543,882)-(4016,940)
+PageRank Algorithm Explanation_0001.tif  character recognition 2
+Result of ExpressReader
+LRect=(543,882)-(4016,940)
+PageRank Algorithm Explanation_0001.tif  character recognition 3
+PageRank Algorithm Explanation_0001.tif  verifying ...
+result of mergeEngTextResults
+LRect=(543,882)-(4016,940)
+formula structure analysis .. 
+PageRank Algorithm Explanation_0001.tif  structure analysis
+PageRank Algorithm Explanation_0001.tif  saving ...

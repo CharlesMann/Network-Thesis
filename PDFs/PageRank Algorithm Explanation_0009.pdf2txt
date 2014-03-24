@@ -1,0 +1,94 @@
+THE $25,000,000,000 EIGENVECTOR 9
+where ei = sgn(wi). Note that the ei are not all of one sign, since i wi = 0 (unless w ≡ 0 in which
+case the bound clearly holds). Reverse the double sum to obtain
+w 1 =
+n
+j=1
+vj
+n
+i=1
+eiMij =
+n
+j=1
+ajvj, (4.1)
+where aj =
+n
+i=1 eiMij. Since the ei are of mixed sign and i Mij = 1 with 0 < Mij < 1, it is easy
+to see that
+−1 < −1 + 2 min
+1≤i≤n
+Mij ≤ aj ≤ 1 − 2 min
+1≤i≤n
+Mij < 1.
+We can thus bound
+|aj| ≤ |1 − 2 min
+1≤i≤n
+Mij| < 1.
+Let c = max1≤j≤n |1 − 2 min1≤i≤n Mij|. Observe that c < 1 and |aj| ≤ c for all j. From equation
+(4.1) we have
+w 1 =
+n
+j=1
+ajvj =
+n
+j=1
+ajvj ≤
+n
+j=1
+|aj||vj| ≤ c
+n
+j=1
+|vj| = c v 1,
+which proves the proposition.
+Proposition 4 sets the stage for the following proposition.
+Proposition 5. Every positive column-stochastic matrix M has a unique vector q with positive
+components such that Mq = q with q 1 = 1. The vector q can be computed as q = limk→∞ Mk
+x0
+for any initial guess x0 with positive components such that x0 1 = 1. Proof. From Proposition
+1 the matrix M has 1 as an eigenvalue and by Lemma 3.2 the subspace V1(M) is one-dimensional.
+Also, all non-zero vectors in V1(M) have entirely positive or negative components. It is clear that
+there is a unique vector q ∈ V1(M) with positive components such that i qi = 1.
+Let x0 be any vector in lRn
+with positive components such that x0 1 = 1. We can write
+x0 = q + v where v ∈ V (V as in Proposition 4). We ﬁnd that Mk
+x0 = Mk
+q + Mk
+v = q + Mk
+v.
+As a result
+Mk
+x0 − q = Mk
+v. (4.2)
+A straightforward induction and Proposition 4 shows that Mk
+v 1 ≤ ck
+v 1 for 0 ≤ c < 1 (c as in
+Proposition 4) and so limk→∞ Mk
+v 1 = 0. From equation (4.2) we conclude that limk→∞ Mk
+x0 =
+q.
+Example: Let M be the matrix deﬁned by equation (3.3) for the web of Figure 2.2. We take
+x0 = [0.24, 0.31, 0.08, 0.18, 0.19]T
+as an initial guess; recall that we had q = [0.2, 0.2, 0.285, 0.285, 0.03]T
+.
+The table below shows the value of Mk
+x0 − q 1 for several values of k, as well as the ratio
+Mk
+x0 − q 1/ Mk−1
+x0 − q 1. Compare this ratio to c from Proposition 4, which in this case is
+0.94.
+k Mk
+x0 − q 1
+Mk
+x0−q 1
+Mk−1x0−q 1
+0 0.62
+1 0.255 0.411
+5 0.133 0.85
+10 0.0591 0.85
+50 8.87 × 10−5
+0.85
+It is clear that the bound Mk
+x0 − q 1 ≤ ck
+x0 − q 1 is rather pessimistic (note 0.85 is the value
+1 − m, and 0.85 turns out to be the second largest eigenvalue for M). One can show that in general
+the power method will converge asymptotically according to Mxk − q 1 ≈ |λ2| x − q 1, where λ2

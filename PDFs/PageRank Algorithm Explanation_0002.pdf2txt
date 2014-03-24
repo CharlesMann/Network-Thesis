@@ -1,0 +1,51 @@
+2 K. BRYAN AND T. LEISE
+42
+31
+42
+31
+Fig. 2.1. An example of a web with only four pages. An arrow from page A to page B indicates a link from page
+A to page B.
+2.1. The basic idea. In what follows we will use the phrase “importance score” or just “score”
+for any quantitative rating of a web page’s importance. The importance score for any web page will
+always be a non-negative real number. A core idea in assigning a score to any given web page is
+that the page’s score is derived from the links made to that page from other web pages. The links
+to a given page are called the backlinks for that page. The web thus becomes a democracy where
+pages vote for the importance of other pages by linking to them.
+Suppose the web of interest contains n pages, each page indexed by an integer k, 1 ≤ k ≤ n. A
+typical example is illustrated in Figure 2.1, in which an arrow from page A to page B indicates a
+link from page A to page B. Such a web is an example of a directed graph.1
+We’ll use xk to denote
+the importance score of page k in the web. The xk is non-negative and xj > xk indicates that page j
+is more important than page k (so xj = 0 indicates page j has the least possible importance score).
+A very simple approach is to take xk as the number of backlinks for page k. In the example in
+Figure 2.1, we have x1 = 2, x2 = 1, x3 = 3, and x4 = 2, so that page 3 would be the most important,
+pages 1 and 4 tie for second, and page 2 is least important. A link to page k becomes a vote for
+page k’s importance.
+This approach ignores an important feature one would expect a ranking algorithm to have,
+namely, that a link to page k from an important page should boost page k’s importance score more
+than a link from an unimportant page. For example, a link to your homepage directly from Yahoo
+ought to boost your page’s score much more than a link from, say, www.kurtbryan.com (no relation
+to the author). In the web of Figure 2.1, pages 1 and 4 both have two backlinks: each links to
+the other, but page 1’s second backlink is from the seemingly important page 3, while page 4’s
+second backlink is from the relatively unimportant page 1. As such, perhaps we should rate page
+1’s importance higher than that of page 4.
+As a ﬁrst attempt at incorporating this idea let’s compute the score of page j as the sum of the
+scores of all pages linking to page j. For example, consider the web of Figure 2.1. The score of page
+1 would be determined by the relation x1 = x3 + x4. Since x3 and x4 will depend on x1 this scheme
+seems strangely self-referential, but it is the approach we will use, with one more modiﬁcation. Just
+as in elections, we don’t want a single individual to gain inﬂuence merely by casting multiple votes.
+In the same vein, we seek a scheme in which a web page doesn’t gain extra inﬂuence simply by
+linking to lots of other pages. If page j contains nj links, one of which links to page k, then we will
+boost page k’s score by xj/nj, rather than by xj. In this scheme each web page gets a total of one
+vote, weighted by that web page’s score, that is evenly divided up among all of its outgoing links. To
+quantify this for a web of n pages, let Lk ⊂ {1, 2, . . . , n} denote the set of pages with a link to page
+k, that is, Lk is the set of page k’s backlinks. For each k we require
+xk =
+j∈Lk
+xj
+nj
+, (2.1)
+where nj is the number of outgoing links from page j (which must be positive since if j ∈ Lk then
+1A graph consists of a set of vertices (in this context, the web pages) and a set of edges. Each edge joins a pair
+of vertices. The graph is undirected if the edges have no direction. The graph is directed if each edge (in the web
+context, the links) has a direction, that is, a starting and ending vertex.

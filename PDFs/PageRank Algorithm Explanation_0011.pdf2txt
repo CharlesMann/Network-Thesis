@@ -1,0 +1,21 @@
+THE $25,000,000,000 EIGENVECTOR 11
+[4] S. Brin and L. Page, The anatomy of a large-scale hypertextual web search engine,
+http : //www − db.stanford.edu/ ∼ backrub/google.html (accessed August 1, 2005).
+[5] A. Farahat, T. Lofaro, J. C. Miller, G. Rae, and L.A. Ward, Authority Rankings from HITS, PageRank,
+and SALSA: Existence, Uniqueness, and Eﬀect of Initialization, SIAM J. Sci. Comput., 27 (2006), pp.
+1181-1201.
+[6] A. Hill, Google Inside Out, Maximum PC, April 2004, pp. 44-48.
+[7] S. Kamvar, T. Haveliwala, and G. Golub, Adaptive methods for the computation of PageRank, Linear
+Algebra Appl., 386 (2004), pp. 51–65.
+[8] A. N. Langville and C. D. Meyer, A survey of eigenvector methods of web information retrieval, SIAM
+Review, 47 (2005), pp. 135-161.
+[9] A. N. Langville and C. D. Meyer, Deeper inside PageRank, Internet Math., 1 (2005), pp. 335–380.
+[10] C. D. Meyer, Matrix Analysis and Applied Linear Algebra, SIAM, Philadelphia, 2000.
+[11] Cleve Moler, The world’s largest matrix computation, http : //www.mathworks.com/company/newsletters/news notes
+/clevescorner/oct02 cleve.html (accessed August 1, 2005).
+[12] Mostafa, J., Seeking better web searches, Sci. Amer., 292 (2005), pp. 66-73.
+[13] Sara Robinson, The Ongoing search for eﬃcient web search algorithms, SIAM News, 37 (Nov 2004).
+[14] Ian Rogers, The Google Pagerank algorithm and how it works, http : //www.iprcom.com/papers/pagerank/
+(accessed August 1, 2005).
+[15] W. J. Stewart, An Introduction to the Numerical Solution of Markov Chains, Princeton University Press,
+Princeton, 1994.

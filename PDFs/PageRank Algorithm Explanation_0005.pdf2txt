@@ -1,0 +1,81 @@
+THE $25,000,000,000 EIGENVECTOR 5
+with eigenvalue 1 because
+Awi
+= A
+
+
+
+
+
+
+
+
+
+
+
+
+0
+...
+0
+vi
+0
+...
+0
+
+
+
+
+
+
+
+
+
+
+
+
+= wi
+.
+Thus V1(A) has dimension at least r.
+2.2.2. Dangling Nodes. Another diﬃculty may arise when using the matrix A to generate
+rankings. A web with dangling nodes produces a matrix A which contains one or more columns of
+all zeros. In this case A is column-substochastic, that is, the column sums of A are all less than or
+equal to one. Such a matrix must have all eigenvalues less than or equal to 1 in magnitude, but
+1 need not actually be an eigenvalue for A. Nevertheless, the pages in a web with dangling nodes
+can still be ranked use a similar technique. The corresponding substochastic matrix must have a
+positive eigenvalue λ ≤ 1 and a corresponding eigenvector x with non-negative entries (called the
+Perron eigenvector) that can be used to rank the web pages. See Exercise 4 below. We will not
+further consider the problem of dangling nodes here, however.
+Exercise 1. Suppose the people who own page 3 in the web of Figure 1 are infuriated by the
+fact that its importance score, computed using formula (2.1), is lower than the score of page 1. In
+an attempt to boost page 3’s score, they create a page 5 that links to page 3; page 3 also links to page
+5. Does this boost page 3’s score above that of page 1?
+Exercise 2. Construct a web consisting of three or more subwebs and verify that dim(V1(A))
+equals (or exceeds) the number of the components in the web.
+Exercise 3. Add a link from page 5 to page 1 in the web of Figure 2. The resulting web,
+considered as an undirected graph, is connected. What is the dimension of V1(A)?
+Exercise 4. In the web of Figure 2.1, remove the link from page 3 to page 1. In the resulting
+web page 3 is now a dangling node. Set up the corresponding substochastic matrix and ﬁnd its largest
+positive (Perron) eigenvalue. Find a non-negative Perron eigenvector for this eigenvalue, and scale
+the vector so that components sum to one. Does the resulting ranking seem reasonable?
+Exercise 5. Prove that in any web the importance score of a page with no backlinks is zero.
+Exercise 6. Implicit in our analysis up to this point is the assertion that the manner in which
+the pages of a web W are indexed has no eﬀect on the importance score assigned to any given page.
+Prove this, as follows: Let W contains n pages, each page assigned an index 1 through n, and let
+A be the resulting link matrix. Suppose we then transpose the indices of pages i and j (so page i is
+now page j and vice-versa). Let ˜A be the link matrix for the relabelled web.
+• Argue that ˜A = PAP, where P is the elementary matrix obtained by transposing rows i and
+j of the n × n identity matrix. Note that the operation A → PA has the eﬀect of swapping
+rows i and j of A, while A → AP swaps columns i and j. Also, P2
+= I, the identity
+matrix.
+• Suppose that x is an eigenvector for A, so Ax = λx for some λ. Show that y = Px is an
+eigenvector for ˜A with eigenvalue λ.
+• Explain why this shows that transposing the indices of any two pages leaves the importance
+scores unchanged, and use this result to argue that any permutation of the page indices leaves
+the importance scores unchanged.
+3. A remedy for dim(V1(A)) > 1. An enormous amount of computing resources are needed
+to determine an eigenvector for the link matrix corresponding to a web containing billions of pages.
+It is thus important to know that our algorithm will yield a unique set of sensible web rankings.
+The analysis above shows that our ﬁrst attempt to rank web pages leads to diﬃculties if the web
+isn’t connected. And the worldwide web, treated as an undirected graph, contains many disjoint
+components; see [9] for some interesting statistics concerning the structure of the web.
