@@ -4,7 +4,11 @@
 % This is a simple template for a LaTeX document using the "article" class.
 % See "book", "report", "letter" for other types of document.
 
+<<<<<<< HEAD
 \documentclass[12pt]{article} % use larger type; default would be 10pt
+=======
+\documentclass[14pt]{article} % use larger type; default would be 10pt
+>>>>>>> Eric-COMAP-revisions
 \setlength{\headheight}{15pt}
 
 \usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
@@ -16,7 +20,7 @@
 %%% PAGE DIMENSIONS
 \usepackage{geometry} % to change the page dimensions
 \geometry{a3paper} % or letterpaper (US) or a5paper or....
- \geometry{margin=1in} % for example, change the margins to 2 inches all round
+ \geometry{margin=2in} % for example, change the margins to 2 inches all round
 % \geometry{landscape} % set up the page for landscape
 %   read geometry.pdf for detailed page layout information
 
@@ -64,7 +68,11 @@
 \fancyhead{}
 \fancyfoot{}
 \lhead{}
+<<<<<<< HEAD
 \chead{Page \thepage of \pageref{LastPage}}
+=======
+\chead{Page \quad \thepage \quad of \quad \pageref{LastPage}}
+>>>>>>> Eric-COMAP-revisions
 
 %%% END Article customizations
 
@@ -74,7 +82,7 @@
 %\date{February 10, 2014} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
-\DeclareMathSizes{12}{12}{12}{10}
+\DeclareMathSizes{14}{14}{9}{12}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -120,7 +128,7 @@ Software Used: MATLAB, R
       \subsubsection{Cytoscape} 
       \indent Cytoscape is also an open sourceware for visualizing data networks. While originally intended more for biological systems, it can be used for any general network $(www.cytoscape.org/what_is_cytoscape.html)$. In addition to the base Cytoscape application, an application named Centiscape was downloaded. This application calculates various influence measures based on the structure of a network (defined below). Cytoscape appears to be a well-maintained site, reliable in its operation. The standards of centrality measures are well-defined through it, and the visualization options aid in understanding the details of a given network.
 <<echo=FALSE>>=
-setwd("~/Network_Thesis/R_Files")
+setwd("C:/Users/Eric Mortberg/Documents/Network-Thesis/R_Files")
 source("erdosnetwork2.R")
 @
 
@@ -161,30 +169,94 @@ This data was then loaded into Cytoscape to construct the network and perform an
       In the context of an article network, one must declare what variable is providing the link between articles. In the case where the goal is to apply knowledge of article rankings to weight links in a coauthorship network, it makes sense to treat citations as backlinks. As with ranking pages, one should avoid simply taking the sum of indegree (Being cited) and outdegree (Citing someone) and treating that as the rank. Doing so would not consider who is citing who, which wouldn't provide very good information about which articles are influential. Thus, it is a better model to  divide an articles' rank among the articles it cites, distributing the vote equally among them. This will have the same effect as a basic pagerank algorithm, giving more weight to votes from more influential articles. Of course, this model is still simple in that it assumes equal distribution of vote, which implies that an author relied upon each source equally which is an unlikely event. Setting up the article network in this fashion allows a system of equations to be established which expresses the relationships between article ranks given the outdegree for each network member. Equal distribution does have a nice effect, namely that in the absence of dangling nodes(nodes with zero outdegree) and nodes with zero indegree, the matrix produced is non-negative and column stochastic. That is, each entry is greater than or equal to 0, and the sum of the values in any given column is equal to 1. In fact, this matrix will be guaranteed to have 1 as an eigenvalue. Taking the eigenvector corresponding to eigenvalue 1 and normalizing its' components to 1 gives article rankings which take into account indegree, outdegree, and weighted importance of vote (citation). Difficulties arise when dangling nodes (Articles which do not cite) or nodes with zero indegree (articles which are not cited by anyone in the network) appear. When such things occur, patches can sometimes be made, but one may find an alternative approach is preferable.
       
   \subsection{Implementation}
+
+  This is the method described by K. Bryan and T.Leise in \textit{THE \$ 25,000,000,000* EIGENVECTOR
+THE LINEAR ALGEBRA BEHIND GOOGLE}.//
+
+\vspace{0.1in}
+
+  Let $r_{n}$ be the rank of a node $n$ in a directed network. Define $r_{n} = \displaystyle\sum\limits_{j\epsilon L_{n}} \frac{r_{j}}{k_{j}}$ where $L_{n} = \{$ nodes with links to node n $\}$ and \\
+  \\
+$k_{j} =$ number of out citations.The system of equations produced from this can be written as follows:\\
   
-  %This is the method described by K. Bryan and T.Leise in \textit{THE $25,000,000,000 EIGENVECTOR
-%THE LINEAR ALGEBRA BEHIND GOOGLE}.
-  Let $r_{n}$ be the rank of a node $n$ in a directed network. Define $r_{n} = \displaystyle\sum\limits_{j\epsilon L_{n}} \frac{r_{j}}{k_{j}}$ where $L_{n} = \{$ nodes with links to node n $\}$ and $k_{j} =$ number of out citations. . The system of equations produced from this can be written as follows:\\
+  
+  %Mention the c's being equal to 1/k's if j is in L_n
+  
   \begin{center}
-  $ r_{1} = c_{12} r_{2} + c_{13} r_{3} + . . . + c_{1n} r_{n}$ \\ 
-  $ r_{2} = c_{21} r_{1} + c_{23} r_{3} + . . . + c_{2n} r_{n}$ \\
-  $ r_{3} = c_{31} r_{1} + c_{32} r_{3} + . . . + c_{3n} r_{n}$ \\
-  .\\
-  .\\
-  .\\
-  $ r_{n} = c_{n1} r_{1} + c_{n2} r_{2} + . . . + c_{nn} r_{n}$\\
+  \begin{array}{lcl}
+   r_{1} & = & c_{12} r_{2} + c_{13} r_{3} + \ldots + c_{1n} r_{n} \\ 
+   r_{2} & = & c_{21} r_{1} + c_{23} r_{3} + \ldots + c_{2n} r_{n} \\
+   r_{3} & = & c_{31} r_{1} + c_{32} r_{3} + \ldots + c_{3n} r_{n} \\
+   \vdots & \vdots &\quad \vdots \quad \quad \quad \vdots \qquad \, \! \! \ldots \, \quad \quad \vdots\\
+   r_{n} & = & c_{n1} r_{1} + c_{n2} r_{2} + \ldots + c_{nn} r_{n} 
+  \end{array}
   \end{center}
   
-  This corresponds to a the matrix product Cr where r is the rank column vector and C is the matrix of coefficients for this system. This matrix is column stochastic (the column values sum to one in each time). A column stochastic matrix is guaranteed to have an eigen value of 1. Calculate the eigenvector of C corresponding to eigenvalue 1, normalize the eigenvector to 1, and those are the ranks of the nodes.
+  \newpage
   
+  This system of equations is equivalent to the matrix product:
+
+  \begin{equation}
+  \begin{center}
+  
+  \[
+  
+  Cr =
+    \begin{matrix}
+    \begin{pmatrix}
+    0 & c_{12} & c_{13} & \ldots & c_{1n}\\
+    c_{21} & 0 & c_{23} & \ldots & c_{2n}\\
+    c_{31} & c_{32} & 0 & \ldots & c_{1n}\\
+    \vdots & \vdots & \vdots & \ddots & \vdots\\
+    c_{n1} & c_{n2} & c_{n3} & \ldots & 0\\
+  \end{pmatrix}
+    
+   \begin{pmatrix}
+    r_{1}\\
+    r_{2}\\
+    r_{3}\\
+    \vdots \\
+    r_{n}\\
+  \end{pmatrix}
+  
+  =
+  
+  \begin{pmatrix}
+    r_{1}\\
+    r_{2}\\
+    r_{3}\\
+    \vdots \\
+    r_{n}\\
+  \end{pmatrix}
+  
+  \end{matrix}
+  \]
+   
+  \end{center}
+  \end{equation}
+  
+  Note $c_{ij}$ refers to the matrix element in the $i$th row and $j$th column. Note also that all values along the diagonal are zero because articles (or webpages) will not be given credit for self-reference.\\
+  
+  Therefore, the column vector $r$ of the ranks of network members is the eigenvector corresponding to eigenvalue 
+  $\lambda = 1$, which C is guarenteed to have as an eigenvalue because C is column stochastic (the column values sum to one in each column). This will be true as long as there are not any dangling nodes or any with zero indegree. \\
+  
+  Calculate the eigenvector of C corresponding to eigenvalue 1, and normalize the eigenvector to 1 to have the ranks.%Geometric interpretation of eigenvector rankings?
+  
+  %Demonstrate this process for small network
     \subsubsection{Applying Pagerank to Article Network 1}
+    %Show what happened when pagerank directly applied to article network1; this may eliminate the need for some of text below
     \indent As described above, a small database of articles was compiled, each citing one of the others in the network. There were a total of nine nodes, and eighteen directed edges, and this data was represented by an excel data table which was exported to MATLAB for analysis. Many attempts were made trying to implement the pagerank algorithm to this network, but it was realized that the presence of dangling nodes and those with indegree 0 were throwing a wrench into the algorithm. 
   \subsection{Thorny Issues With Pageranking Articles}
     As mentioned earlier, dangling nodes and those with zero indegree create problem for this article pagerank algorithm. In the case of dangling nodes, the matrix is no longer column stochastic. Instead, it is column substochastic, meaning the sum of the values in any given column is less than or equal to 1. This removes the guarantee that the matrix will have 1 as an eigenvalue. One may definitely cry alas! However, hope is not yet lost thanks to a striking theorem from linear algebra independently discovered by Oskar Perron and Georg Frobenius in 1907 and 1912 respectively. See below for explanation. 
     Nodes with zero indegree lead to a more troubling problem. In this model, such nodes receive zero votes due to their not being cited. This causes their corresponding rows and columns in the rank coefficient matrix to zero out, making it futile to perform the eigenvector analysis as before. When this situation is encountered, it is probably best to find a way to modify the algorithm, or to develop a scheme to artificially assign equal ranks to such nodes from the onset. This allows for a similar algorithm to be carried out which preserves informative relative rankings of the remaining nodes in the graph. After the ranks are computed, one can then reassign the rank of the zero indegree nodes using an appropriate scheme giving the other rankings. Admittedly, this is not an ideal patch, but it does provide meaningful rankings. Furthermore, it makes sense that articles with zero indegree will have equal or similar rankings given that neither is receiving a citation. They could be interpreted as new editions to the network and therefore have not been around long enough to be cited, or as articles with less than significant value. Thus, their true rank is indeterminate, but should be considered non-zero because they did manage to get published.
     
   \subsection{Attempt to Patch Article Pagerank Method}
+  %Function to ensure nonzero rank? 
+  %Demonstrate patches to pagerank;possibly discuss use of damping coefficient here
+  %How does one go about calculating a damping coefficient? Perturbation?
+  %Will this process replace ArticleImport?
     \subsubsection{Perron-Frobenius Theorem}
+    %Theorem Statement, showing a matrix satisfies requirements of theorem. Geometric interpretation of perron-Frobenious eigenvector? Why is this an acceptable replacment for eigenvector with eigenvalue 1?
 \section{ArticleImport Algorithm for Ranking Articles}
     This algorithm was developed when nodes with zero indegree were encountered. It is meant to be implemented instead of the other pagerank variations. 
     \subsection{Implementation}
@@ -200,10 +272,15 @@ In \textit{Co-Authorship Networks in the Digital Library Research Community} by 
   This approach is very promising, but there are other options for what can be used to set the link weight in the coauthorship network. If a network of articles is constructed which cite each other, and each article is authored by a member of the coauthorship network, a measure of work quality can be used to weight links between coauthors. Using the ArticleImport algorithm, weights (magnitude of importance) are assigned to all articles in a relative fashion. Then, for each author in the coauthorship network, the weight of its' outward links can be set as the average of the article weights for the articles that author helped write. Thus, an endorsement (coauthoring) from (with) an author who has produced many important articles will contribute more to the "endorsement receiving" author's rank than an endorsement from an author who has produced lower quality articles, or fewer high quality articles. Deciding when to give an author more endorsement to transfer to others based on the quality of his work seems to be preferable to deciding the level of endorsement based on the strength of the collaboration between two authors. 
    MATLAB was used to create ArticleImport. To create the matrix, MATLAB had to loop through the data in order to create the ordered pairs representing edges between two nodes, then use this to create a matrix representing the system of equations based on the number of edges for each node. Arbitrary values were then assigned to nodes with indegree of zero, the system solved, and the appropriate eigenvector reported as set of ranks of corresponding to each article.
 \subsection{Implementation} 
+%Notation for ranks produced by articleImport algorithm for articles
+%Also show that authorechelon matrix satisfies requirements of perron-frobenious
+%Show eigensystem, corresponding matrix equation, finding perron eigenvector
 
 Let $W_{i}$ be the rank of an article $i$ as computed with the ArticleImport algorithm. Let $Z_n$ be the average of the ranks of the $W_{i}$'s associated with author $n$. Then, the weight given to the link from author $n$ to author $m$ is $Z_n$. Take the matrix composed of these new weights which are normalized to one, and find perron frobenius eigenvector. These arew author ranks after normalization to 1.
 \subsection{Dangling Nodes, Zero Indegree, and Perron-Frobenius Eigenvector Revisited}
 \subsection{Applying Modified Authorrank Algorithm to Article Network 2 and Erdos1 Subnetwork}% Conclusions drawn drom this analysis
+
+%Discuss finding eigenvectors for much larger networks(Power Method, etc.)
 \section{Utility of Modeling Influence and Impact Within Networks}
 \section{Conclusion}
 \begin{center}
