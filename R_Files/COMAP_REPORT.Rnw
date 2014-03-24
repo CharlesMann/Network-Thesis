@@ -69,7 +69,7 @@
 %%% END Article customizations
 
 %%% The "real" document content comes below...
-%Still much to do
+
 \title{AuthorEchelon Algorithm for Erdos1 Authors}
 %\date{February 10, 2014} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
