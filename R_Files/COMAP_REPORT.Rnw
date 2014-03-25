@@ -7,7 +7,7 @@
 
 \usepackage{extsizes}
 
-\documentclass[14pt]{extarticle}
+\documentclass[17pt]{extarticle}
 %\documentclass[26pt]{article} % use larger type; default would be 10pt
 
 \setlength{\headheight}{15pt}
@@ -87,6 +87,10 @@
 
 
 \DeclareMathSizes{14}{14}{9}{12}
+
+%\usepackage{setspace}
+%\linespread{1.1}
+%\onehalfspacing
 
 %The following creates environments for theorems, lemmas, etc.
 \newtheorem{theorem}{Theorem}[section]
