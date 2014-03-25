@@ -1,28 +1,29 @@
 \contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {section}{\numberline {2}Building the Coauthor Network of Erdos1 Authors}{3}
-\contentsline {subsection}{\numberline {2.1}Tools Used for Data Extraction and Network Visualization}{3}
-\contentsline {subsubsection}{\numberline {2.1.1}RStudio}{3}
-\contentsline {subsubsection}{\numberline {2.1.2}Cytoscape}{3}
-\contentsline {subsection}{\numberline {2.2}Extracting the Erdos1 Subnetwork}{3}
-\contentsline {subsection}{\numberline {2.3}Graphing Erdos1 Subnetwork}{4}
-\contentsline {subsection}{\numberline {2.4}Limitations of this Model}{4}
-\contentsline {section}{\numberline {3}Construction of Article Network 1}{4}
-\contentsline {section}{\numberline {4}Pagerank Algorithm for Directed Graphs}{4}
-\contentsline {subsection}{\numberline {4.1}Applicability}{4}
-\contentsline {subsection}{\numberline {4.2}Implementation}{4}
-\contentsline {subsubsection}{\numberline {4.2.1}Applying Pagerank to Article Network 1}{5}
-\contentsline {subsection}{\numberline {4.3}Thorny Issues With Pageranking Articles}{5}
-\contentsline {subsection}{\numberline {4.4}Attempt to Patch Article Pagerank Method}{5}
-\contentsline {subsubsection}{\numberline {4.4.1}Perron-Frobenius Theorem}{5}
-\contentsline {section}{\numberline {5}ArticleImport Algorithm for Ranking Articles}{5}
-\contentsline {subsection}{\numberline {5.1}Implementation}{5}
-\contentsline {subsection}{\numberline {5.2}Circumventing Dangling Nodes and Those with Zero Indegree}{5}
-\contentsline {subsection}{\numberline {5.3}Conclusions Regarding Influential Nodes in Article Network 1}{5}
-\contentsline {section}{\numberline {6}Construction of Article Network 2}{5}
-\contentsline {section}{\numberline {7}Using Modified Authorrank Algorithm on Erdos1 Subnetwork}{5}
-\contentsline {section}{\numberline {8}Modified Authorrank Algorithm}{5}
-\contentsline {subsection}{\numberline {8.1}Implementation}{6}
-\contentsline {subsection}{\numberline {8.2}Dangling Nodes, Zero Indegree, and Perron-Frobenius Eigenvector Revisited}{6}
-\contentsline {subsection}{\numberline {8.3}Applying Modified Authorrank Algorithm to Article Network 2 and Erdos1 Subnetwork}{6}
-\contentsline {section}{\numberline {9}Utility of Modeling Influence and Impact Within Networks}{6}
-\contentsline {section}{\numberline {10}Conclusion}{6}
+\contentsline {subsection}{\numberline {1.1}Vocabulary}{3}
+\contentsline {section}{\numberline {2}Construction of the Erd\H {o}s1 Network}{4}
+\contentsline {subsection}{\numberline {2.1}The Data}{4}
+\contentsline {section}{\numberline {3}Building the Coauthor Network of Erdos1 Authors}{4}
+\contentsline {subsection}{\numberline {3.1}Tools Used for Data Extraction and Network Visualization}{4}
+\contentsline {subsubsection}{\numberline {3.1.1}RStudio}{4}
+\contentsline {subsubsection}{\numberline {3.1.2}Cytoscape}{4}
+\contentsline {subsection}{\numberline {3.2}Extracting the Erdos1 Subnetwork}{4}
+\contentsline {subsection}{\numberline {3.3}Graphing Erdos1 Subnetwork}{5}
+\contentsline {subsection}{\numberline {3.4}Limitations of this Model}{5}
+\contentsline {section}{\numberline {4}Construction of Article Network 1}{6}
+\contentsline {section}{\numberline {5}Pagerank Algorithm for Directed Graphs}{6}
+\contentsline {subsection}{\numberline {5.1}Applicability}{6}
+\contentsline {subsection}{\numberline {5.2}Implementation}{6}
+\contentsline {subsubsection}{\numberline {5.2.1}Applying Pagerank to Article Network 1}{7}
+\contentsline {subsection}{\numberline {5.3}Thorny Issues With Pageranking Articles}{8}
+\contentsline {section}{\numberline {6}ArticleImport Algorithm for Ranking Articles}{8}
+\contentsline {subsection}{\numberline {6.1}Implementation}{9}
+\contentsline {subsection}{\numberline {6.2}Circumventing Dangling Nodes and Those with Zero Indegree}{9}
+\contentsline {subsection}{\numberline {6.3}Conclusions Regarding Influential Nodes in Article Network 1}{9}
+\contentsline {section}{\numberline {7}Construction of Article Network 2}{9}
+\contentsline {section}{\numberline {8}Using Modified Authorrank Algorithm on Erdos1 Subnetwork}{9}
+\contentsline {section}{\numberline {9}Modified Authorrank Algorithm}{9}
+\contentsline {subsection}{\numberline {9.1}Implementation}{10}
+\contentsline {subsection}{\numberline {9.2}Dangling Nodes, Zero Indegree, and Perron-Frobenius Eigenvector Revisited}{10}
+\contentsline {subsection}{\numberline {9.3}Applying Modified Authorrank Algorithm to Article Network 2 and Erdos1 Subnetwork}{10}
+\contentsline {section}{\numberline {10}Utility of Modeling Influence and Impact Within Networks}{10}
+\contentsline {section}{\numberline {11}Conclusion}{10}
