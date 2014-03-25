@@ -7,7 +7,7 @@
 
 \usepackage{extsizes}
 
-\documentclass[17pt]{extarticle}
+\documentclass[20pt]{extarticle}
 %\documentclass[26pt]{article} % use larger type; default would be 10pt
 
 \setlength{\headheight}{15pt}
@@ -71,10 +71,6 @@
 \fancyfoot{}
 \lhead{}
 
-\chead{Page \thepage of \pageref{LastPage}}
-
-\chead{Page \quad \thepage \quad of \quad \pageref{LastPage}}
-
 
 %%% END Article customizations
 
@@ -122,18 +118,29 @@
 ABSTRACT
 \end{center}
 
-\begin{center}
 \indent
 
-\raggedright {We analyze coauthor and article networks populated by authors with an Erdos number of 1, and articles linked by citation respectively.  We develop an algorithm to rank the authors in terms of relative influence, taking into account the quality of published works. When the only relationship between authors is coauthorship, only general centrality measures can be readily applied to attempt to distinguish influential network members. Simple models which only consider node degree measures fail to provide a purposeful way to weight links, limiting the detail of the analysis. We present a method to rank coauthors by first constructing an article network composed of articles written by members of the coauthor network. We require that the articles cite other papers in the network so that relative article rankings can be calculated.These article rankings are used to determine link weights in a symmetric coauthor(coendorsement) network, which can be thought of as the work quality of an author.Weighting coauthor links in this manner treats endorsement by a prominent author as more valuable than endorsement by a lesser one. With this furniture in place, a variation of a pagerank algorithm is applied to the coauthor network. We find the Perron-Frobenious eigenvector of the matrix composed of authorrank coefficients (quality weights), whose elements when normalized to one are the author ranks of the coauthor network. We discuss conclusions concerning influential members of the Erdos1 subnetwork and general applicability of this ranking method to other types of networks. We conclude with suggestions for further modifications to this approach, such as treating Erdos like a random web surfer in the Erdos1 network, where the pagerank damping coefficient is the probability that Erdos will coauthor with you given that he pays you a visit.}
+
+\begin{small}
+\indent
+ We analyze coauthor and article networks populated by authors with an Erdos number of 1, and articles linked by citation respectively.  We develop an algorithm to rank the authors in terms of relative influence, taking into account the quality of published works. When the only relationship between authors is coauthorship, only general centrality measures can be readily applied to attempt to distinguish influential network members. Simple models which only consider node degree measures fail to provide a purposeful way to weight links, limiting the detail of the analysis. We present a method to rank coauthors by first constructing an article network composed of articles written by members of the coauthor network. We require that the articles cite other papers in the network so that relative article rankings can be calculated.These article rankings are used to determine link weights in a symmetric coauthor(coendorsement) network, which can be thought of as the work quality of an author.Weighting coauthor links in this manner treats endorsement by a prominent author as more valuable than endorsement by a lesser one. With this furniture in place, a variation of a pagerank algorithm is applied to the coauthor network. We find the Perron-Frobenious eigenvector of the matrix composed of authorrank coefficients (quality weights), whose elements when normalized to one are the author ranks of the coauthor network. We discuss conclusions concerning influential members of the Erdos1 subnetwork and general applicability of this ranking method to other types of networks. We conclude with suggestions for further modifications to this approach, such as treating Erdos like a random web surfer in the Erdos1 network, where the pagerank damping coefficient is the probability that Erdos will coauthor with you given that he pays you a visit.
 
 \quad \\
 Keywords: Network, Node, Target, Centrality, Heimdall Node \\
-Software Used: MATLAB, R
+Software Used: MATLAB, RStudio, Cytoscape
+
+\end{small}
+
 \newpage
-\end{center}
+
 \tableofcontents
+
 \newpage
+
+\chead{Page \thepage of \pageref{LastPage}}
+
+\chead{Page \quad \thepage \quad of \quad \pageref{LastPage}}
+\setcounter{page}{1}
 \section{Introduction}
 \indent \indent Mathematics has been a very powerful tool dating back thousands of years. At its roots, it is just another language, effectively able to communicate and describe ideas. In this way, mankind has been attempting to use mathematics to create descriptive models of our universe, from the cosmos to the atom. As our species has advanced, both in a technological and societal sense, we have been able to focus our efforts on more abstract ideas, exploring new fields such as interactions between humans rather than the motion of a rock hurled through the air. New tools have enabled us to see microscopic processes in the body we never knew existed, and the leaps we have made in advancing computing power now allow us to work with truly huge and complex systems. Network science can be seen as a branch of mathematics; a method to formally speak of these interactions between people, between the components of a metabolic process in the human body, or in the context of numerous other connected systems. Specifically, network science combines elements of linear algebra, graph theory, and computer science (specifically data mining and data preparation) in order to analyze and make predictions about a given system. It is a field with very direct practical applications spanning many different fields as already noted, and thus research to further this field stands a great chance of finding its way into real-world scenarios. For example, networking science is largely responsible for Google's success. Where other search engines simply searched web pages for key words, Google was able to rank pages according to their importance within the network of existing pages (citation). The recent expansion of this field and its applied nature make it a worthwhile area of research. This claim is supported through the actions of Consortium for Mathematics and its Applications (COMAP). The COMAP hosts the MCM/ICM contest, an international mathematical modeling competition featuring three problems to choose from each year, one of which is always an interdisciplinary prompt  (citation? http://www.comap.com/undergraduate/contests/). Topics in the past have focused on clean energy research, queuing theory, and in two of the last three years, network science. Drawing upon the Interdisciplinary Contest for Modeling prompt from 2014 (see attached prompt), this paper will focus on the creation and analysis of a network of coauthors who share authorship with Paul Erd\H{o}s, called the Erd\H{o}s1 network from this point forward. Specifically, this paper will address the creation of Erd\H{o}s1 and the AuthorRank algorithm, answering the question of which author in the Erd\H{o}s1 network is most influential, and then discuss ways in which this algorithm could potentially be generalized to analyze the most influential node for any given network.
 \\
