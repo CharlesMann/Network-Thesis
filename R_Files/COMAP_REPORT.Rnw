@@ -327,7 +327,7 @@ The eigenvectors corresponding to $\lambda_{1}$ are called dominant eigenvectors
     \end{definition}
     
     \begin{definition}
-    Irreducible Matrix: A matrix $A$ is a nonnegative, irreducible $n \times n$ if and only if 
+    Irreducible Matrix: A matrix $A$ is a nonnegative, irreducible $n \times n$ matrix if and only if 
     \begin{center}
     $(I_{n} + A)^{n-1}$ $> 0$ 
     \end{center}
